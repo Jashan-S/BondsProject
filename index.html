@@ -138,7 +138,7 @@
 <body>
 
 <div class="strip" aria-hidden="true">
-  <span>US 2Y <b id="t2">—</b></span><span>US 10Y <b id="t10">—</b></span><span>US 30Y <b id="t30">—</b></span><span>2s10s <b id="s210">—</b></span><span>CAN 10Y <b id="c10">—</b></span><span>IG SPREAD <b id="ig">—</b></span><span>HY SPREAD <b class="dn" id="hy">—</b></span><span class="dn">DELAYED · DEMO DATA</span>
+  <span>US 2Y <b id="t2">—</b></span><span>US 10Y <b id="t10">—</b></span><span>US 30Y <b id="t30">—</b></span><span>2s10s <b id="s210">—</b></span><span>CAN 10Y <b id="c10">—</b></span><span>IG SPREAD <b id="ig">—</b></span><span>HY SPREAD <b class="dn" id="hy">—</b></span><span class="dn" id="src">DELAYED · DEMO DATA</span>
 </div>
 
 <header>
@@ -177,7 +177,9 @@
         </g>
         <!-- axis labels -->
         <g fill="#3C4A42" font-size="10">
-          <text x="14" y="84">5.0%</text><text x="14" y="134">4.5%</text><text x="14" y="184">4.0%</text>
+          <text id="gl0" x="14" y="84">5.0%</text><text id="gl1" x="14" y="134">4.5%</text><text id="gl2" x="14" y="184">4.0%</text>
+        </g>
+        <g id="tenorLabels" fill="#3C4A42" font-size="10">
           <text x="60" y="248">3M</text><text x="118" y="248">2Y</text><text x="180" y="248">5Y</text>
           <text x="246" y="248">10Y</text><text x="330" y="248">20Y</text><text x="416" y="248">30Y</text>
         </g>
@@ -185,16 +187,16 @@
         <path id="curvePath" d="M 66 96 C 95 140, 105 162, 124 166 S 165 158, 186 148 C 220 132, 235 122, 252 116 S 320 100, 336 96 C 370 89, 400 86, 422 84"
           fill="none" stroke="#1E5B43" stroke-width="2.5" stroke-linecap="round"/>
         <!-- tenor markers -->
-        <g fill="#1E5B43">
+        <g id="curveDots" fill="#1E5B43">
           <circle cx="66" cy="96" r="3.5"/><circle cx="124" cy="166" r="3.5"/><circle cx="186" cy="148" r="3.5"/>
           <circle cx="252" cy="116" r="3.5"/><circle cx="336" cy="96" r="3.5"/><circle cx="422" cy="84" r="3.5"/>
         </g>
-        <g fill="#122019" font-size="10.5" font-weight="500">
+        <g id="curveVals" fill="#122019" font-size="10.5" font-weight="500">
           <text x="54" y="86">4.93</text><text x="112" y="186">4.21</text><text x="174" y="168">4.38</text>
           <text x="240" y="106">4.62</text><text x="324" y="86">4.86</text><text x="404" y="74">4.97</text>
         </g>
       </svg>
-      <figcaption><span>US TREASURY ACTIVES · SAMPLE</span><span>SOURCE: FRED H.15</span></figcaption>
+      <figcaption><span id="cap1">US TREASURY CURVE · SAMPLE</span><span id="cap2">SOURCE: FRED H.15</span></figcaption>
     </figure>
   </div>
 
@@ -310,12 +312,88 @@
 </footer>
 
 <script>
-  // Demo ticker values — replace with a fetch() to your data API in Phase 1.
-  const demo = {t2:"4.21%", t10:"4.62%", t30:"4.97%", s210:"+41bp", c10:"3.38%", ig:"+96bp", hy:"+318bp"};
-  for (const [id,val] of Object.entries(demo)) {
-    const el = document.getElementById(id);
-    if (el) el.textContent = val;
+  // Loads data/market.json (written nightly by scripts/fetch_data.py via
+  // GitHub Actions). Falls back to demo values if the file can't be fetched.
+  const DEMO = {
+    demo: true,
+    us: { date: "sample", curve: [
+      {tenor:"3M",yield:4.93},{tenor:"2Y",yield:4.21},{tenor:"5Y",yield:4.38},
+      {tenor:"10Y",yield:4.62},{tenor:"20Y",yield:4.86},{tenor:"30Y",yield:4.97}]},
+    canada: { curve: [{tenor:"10Y",yield:3.38}] },
+    spreads: { us_2s10s_bp:41, ig_oas_bp:96, hy_oas_bp:318 }
+  };
+
+  const fmtPct = v => v == null ? "—" : v.toFixed(2) + "%";
+  const fmtBp  = v => v == null ? "—" : (v >= 0 ? "+" : "") + Math.round(v) + "bp";
+  const put = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+
+  function setTicker(m) {
+    const us = Object.fromEntries((m.us?.curve || []).map(p => [p.tenor, p.yield]));
+    const ca = Object.fromEntries((m.canada?.curve || []).map(p => [p.tenor, p.yield]));
+    const s = m.spreads || {};
+    put("t2", fmtPct(us["2Y"]));   put("t10", fmtPct(us["10Y"])); put("t30", fmtPct(us["30Y"]));
+    put("s210", fmtBp(s.us_2s10s_bp)); put("c10", fmtPct(ca["10Y"]));
+    put("ig", fmtBp(s.ig_oas_bp)); put("hy", fmtBp(s.hy_oas_bp));
+    put("src", m.demo ? "DELAYED · DEMO DATA" : "EOD · FRED + BANK OF CANADA");
   }
+
+  function drawCurve(curve, dateStr, demo) {
+    const pts = (curve || []).filter(p => p.yield != null);
+    if (pts.length < 2) return;
+    const X0 = 66, X1 = 422, Y0 = 70, Y1 = 230;
+    const ys = pts.map(p => p.yield);
+    let lo = Math.min(...ys), hi = Math.max(...ys);
+    const pad = Math.max(0.15, (hi - lo) * 0.18);
+    lo -= pad; hi += pad;
+    const x = i => X0 + (i / (pts.length - 1)) * (X1 - X0);
+    const y = v => Y1 - (v - lo) / (hi - lo) * (Y1 - Y0);
+
+    [[80,"gl0"],[130,"gl1"],[180,"gl2"]].forEach(([gy, id]) => {
+      const v = lo + (Y1 - gy) / (Y1 - Y0) * (hi - lo);
+      put(id, v.toFixed(2) + "%");
+    });
+
+    const P = pts.map((p, i) => [x(i), y(p.yield)]);
+    let d = `M ${P[0][0].toFixed(1)} ${P[0][1].toFixed(1)}`;
+    for (let i = 0; i < P.length - 1; i++) {
+      const p0 = P[Math.max(0, i - 1)], p1 = P[i], p2 = P[i + 1], p3 = P[Math.min(P.length - 1, i + 2)];
+      const c1 = [p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6];
+      const c2 = [p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6];
+      d += ` C ${c1[0].toFixed(1)} ${c1[1].toFixed(1)}, ${c2[0].toFixed(1)} ${c2[1].toFixed(1)}, ${p2[0].toFixed(1)} ${p2[1].toFixed(1)}`;
+    }
+    const path = document.getElementById("curvePath");
+    path.setAttribute("d", d);
+    const len = path.getTotalLength();
+    path.style.strokeDasharray = len;
+    path.style.strokeDashoffset = "0";
+
+    const dots = document.getElementById("curveDots");
+    const vals = document.getElementById("curveVals");
+    const tl = document.getElementById("tenorLabels");
+    dots.innerHTML = ""; vals.innerHTML = ""; tl.innerHTML = "";
+    pts.forEach((p, i) => {
+      const cx = x(i), cy = y(p.yield);
+      dots.insertAdjacentHTML("beforeend",
+        `<circle cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="3.5"/>`);
+      const above = cy > 130;
+      vals.insertAdjacentHTML("beforeend",
+        `<text x="${(cx - 11).toFixed(1)}" y="${(above ? cy - 10 : cy + 19).toFixed(1)}">${p.yield.toFixed(2)}</text>`);
+      tl.insertAdjacentHTML("beforeend",
+        `<text x="${(cx - 8).toFixed(1)}" y="248">${p.tenor}</text>`);
+    });
+
+    put("cap1", demo ? "US TREASURY CURVE · SAMPLE" : "US TREASURY CURVE · " + dateStr);
+  }
+
+  (async () => {
+    let m = DEMO;
+    try {
+      const r = await fetch("data/market.json", { cache: "no-store" });
+      if (r.ok) m = await r.json();
+    } catch (e) { /* offline or file:// — keep demo */ }
+    setTicker(m);
+    drawCurve(m.us?.curve, m.us?.date || "", !!m.demo);
+  })();
 </script>
 </body>
 </html>
