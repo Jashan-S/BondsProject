@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Basispoint — Fixed income intelligence without the terminal</title>
+<meta name="description" content="Bond market data, screeners, and ladder tools for self-directed investors. See the yields the terminal crowd sees, at one thousandth of the price.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Besley:ital,wght@0,400;0,600;0,800;1,400&family=Public+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#EFF1EC;
+    --paper-deep:#E4E8E1;
+    --ink:#122019;
+    --ink-soft:#3C4A42;
+    --green:#1E5B43;
+    --green-deep:#143D2E;
+    --seal:#B33A2B;
+    --rule:#C7CFC6;
+    --mono:'IBM Plex Mono',monospace;
+    --body:'Public Sans',system-ui,sans-serif;
+    --display:'Besley',Georgia,serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  a{color:var(--green);text-decoration-thickness:1px;text-underline-offset:3px}
+  a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--green);outline-offset:3px}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+
+  /* ── data strip ───────────────────────────── */
+  .strip{background:var(--ink);color:var(--paper);font-family:var(--mono);font-size:12.5px;letter-spacing:.02em;overflow:hidden;white-space:nowrap;padding:7px 0;border-bottom:3px solid var(--green)}
+  .strip span{margin:0 26px}
+  .strip b{color:#9FD6BC;font-weight:500}
+  .strip .dn{color:#E8A79D}
+
+  /* ── header ───────────────────────────────── */
+  header{border-bottom:1px solid var(--rule)}
+  .nav{display:flex;align-items:baseline;justify-content:space-between;padding:20px 0}
+  .logo{font-family:var(--display);font-weight:800;font-size:22px;letter-spacing:-.01em;color:var(--ink);text-decoration:none}
+  .logo small{font-family:var(--mono);font-weight:400;font-size:11px;color:var(--green);margin-left:8px;letter-spacing:.08em}
+  .nav-links{display:flex;gap:28px;font-size:14.5px}
+  .nav-links a{color:var(--ink-soft);text-decoration:none}
+  .nav-links a:hover{color:var(--green);text-decoration:underline}
+
+  /* ── hero ─────────────────────────────────── */
+  .hero{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center;padding:72px 0 64px}
+  .eyebrow{font-family:var(--mono);font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:18px}
+  h1{font-family:var(--display);font-weight:800;font-size:clamp(34px,4.6vw,52px);line-height:1.08;letter-spacing:-.015em;margin-bottom:20px}
+  h1 em{font-style:italic;font-weight:400;color:var(--green)}
+  .lede{font-size:18.5px;color:var(--ink-soft);max-width:46ch;margin-bottom:30px}
+  .cta-row{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+  .btn{display:inline-block;font-family:var(--body);font-weight:600;font-size:15.5px;padding:13px 24px;border-radius:3px;text-decoration:none;border:1.5px solid var(--green);cursor:pointer}
+  .btn-solid{background:var(--green);color:var(--paper)}
+  .btn-solid:hover{background:var(--green-deep)}
+  .btn-ghost{color:var(--green);background:transparent}
+  .btn-ghost:hover{background:rgba(30,91,67,.07)}
+  .hero-note{font-family:var(--mono);font-size:12px;color:var(--ink-soft);margin-top:14px}
+
+  /* ── curve chart ──────────────────────────── */
+  .curve-card{background:var(--paper-deep);border:1px solid var(--rule);border-radius:4px;padding:18px 18px 10px;position:relative}
+  .curve-card .tag{position:absolute;top:-11px;left:16px;background:var(--green);color:var(--paper);font-family:var(--mono);font-size:11px;letter-spacing:.1em;padding:3px 10px;border-radius:2px}
+  .curve-card figcaption{font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);padding:8px 4px 6px;display:flex;justify-content:space-between}
+  svg text{font-family:var(--mono)}
+
+  /* ── sections ─────────────────────────────── */
+  section{padding:64px 0;border-top:1px solid var(--rule)}
+  h2{font-family:var(--display);font-weight:600;font-size:clamp(26px,3.2vw,34px);letter-spacing:-.01em;margin-bottom:14px;max-width:24ch}
+  .section-lede{color:var(--ink-soft);max-width:62ch;margin-bottom:40px}
+
+  /* spread demo */
+  .spread{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:4px;overflow:hidden;max-width:760px}
+  .spread > div{background:var(--paper);padding:26px 28px}
+  .spread .who{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:10px}
+  .spread .px{font-family:var(--mono);font-size:34px;font-weight:500}
+  .spread .px small{font-size:14px;color:var(--ink-soft);font-weight:400}
+  .spread .inst .px{color:var(--green)}
+  .spread .rtl .px{color:var(--seal)}
+  .spread .note{font-size:14px;color:var(--ink-soft);margin-top:8px}
+  .spread-foot{font-family:var(--mono);font-size:12.5px;color:var(--ink-soft);margin-top:14px;max-width:760px}
+
+  /* features */
+  .features{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:4px;overflow:hidden}
+  .feature{background:var(--paper);padding:28px 26px}
+  .feature .k{font-family:var(--mono);font-size:12px;color:var(--green);letter-spacing:.1em;margin-bottom:12px;display:block}
+  .feature h3{font-family:var(--display);font-weight:600;font-size:19px;margin-bottom:8px}
+  .feature p{font-size:15px;color:var(--ink-soft)}
+
+  /* ── coupon pricing ───────────────────────── */
+  .coupons{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;align-items:stretch}
+  .coupon{background:#FBFBF8;border:1px solid var(--rule);position:relative;padding:30px 26px 26px;display:flex;flex-direction:column;
+    -webkit-mask:radial-gradient(circle 7px at 0 50%,transparent 6.5px,#000 7px) left/51% 14px repeat-y,
+                 radial-gradient(circle 7px at 100% 50%,transparent 6.5px,#000 7px) right/51% 14px repeat-y;
+    mask:radial-gradient(circle 7px at 0 50%,transparent 6.5px,#000 7px) left/51% 14px repeat-y,
+         radial-gradient(circle 7px at 100% 50%,transparent 6.5px,#000 7px) right/51% 14px repeat-y}
+  .coupon .tier{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
+  .coupon .price{font-family:var(--display);font-weight:800;font-size:42px;margin:10px 0 2px}
+  .coupon .price small{font-family:var(--mono);font-weight:400;font-size:13px;color:var(--ink-soft)}
+  .coupon ul{list-style:none;margin:18px 0 24px;flex:1}
+  .coupon li{font-size:14.5px;color:var(--ink-soft);padding:7px 0;border-top:1px dotted var(--rule)}
+  .coupon li b{color:var(--ink);font-weight:600}
+  .coupon .btn{text-align:center}
+  .coupon.featured{border:1.5px solid var(--green);background:#F3F8F4}
+  .coupon.featured .tier{color:var(--green)}
+  .clip{font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);text-align:center;margin-top:30px;letter-spacing:.06em}
+
+  /* ── signup ───────────────────────────────── */
+  .signup{background:var(--ink);color:var(--paper);border-radius:4px;padding:52px 48px;display:grid;grid-template-columns:1.2fr .8fr;gap:40px;align-items:center}
+  .signup h2{color:var(--paper)}
+  .signup p{color:#B9C6BE;font-size:15.5px;max-width:48ch}
+  .signup-form{display:flex;gap:10px}
+  .signup-form input{flex:1;font-family:var(--mono);font-size:14.5px;padding:13px 14px;border:1px solid #3D4F46;background:#1B2C24;color:var(--paper);border-radius:3px}
+  .signup-form input::placeholder{color:#7E938A}
+  .signup-form .btn{border-color:#9FD6BC;color:var(--ink);background:#9FD6BC}
+  .signup-form .btn:hover{background:#B9E4CE}
+  .signup .fine{font-family:var(--mono);font-size:11.5px;color:#7E938A;margin-top:12px}
+
+  /* ── footer ───────────────────────────────── */
+  footer{padding:44px 0 56px;border-top:1px solid var(--rule)}
+  .disclaimer{font-size:13px;color:var(--ink-soft);max-width:80ch;margin-bottom:18px}
+  .foot-row{display:flex;justify-content:space-between;font-family:var(--mono);font-size:12px;color:var(--ink-soft);flex-wrap:wrap;gap:10px}
+
+  /* ── motion & responsive ──────────────────── */
+  #curvePath{stroke-dasharray:900;stroke-dashoffset:900;animation:draw 2.2s .3s ease-out forwards}
+  @keyframes draw{to{stroke-dashoffset:0}}
+  @media (prefers-reduced-motion:reduce){#curvePath{animation:none;stroke-dashoffset:0}html{scroll-behavior:auto}}
+  @media (max-width:880px){
+    .hero{grid-template-columns:1fr;padding:48px 0}
+    .features,.coupons{grid-template-columns:1fr}
+    .coupons{gap:30px}
+    .signup{grid-template-columns:1fr;padding:36px 28px}
+    .spread{grid-template-columns:1fr}
+    .nav-links{display:none}
+  }
+</style>
+</head>
+<body>
+
+<div class="strip" aria-hidden="true">
+  <span>US 2Y <b id="t2">—</b></span><span>US 10Y <b id="t10">—</b></span><span>US 30Y <b id="t30">—</b></span><span>2s10s <b id="s210">—</b></span><span>CAN 10Y <b id="c10">—</b></span><span>IG SPREAD <b id="ig">—</b></span><span>HY SPREAD <b class="dn" id="hy">—</b></span><span class="dn">DELAYED · DEMO DATA</span>
+</div>
+
+<header>
+  <div class="wrap nav">
+    <a class="logo" href="#">Basispoint<small>FIXED INCOME, OPENED</small></a>
+    <nav class="nav-links">
+      <a href="#why">Why bonds</a>
+      <a href="#tools">Tools</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#signup">Get the letter</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap hero">
+    <div>
+      <p class="eyebrow">Bond market data for the other 99% of investors</p>
+      <h1>The terminal crowd sees every price. <em>Now you do too.</em></h1>
+      <p class="lede">Yield curves, bond screeners, fair-value checks, and ladder tools built from the same public trade data the professionals use — minus the $28,000-a-year terminal.</p>
+      <div class="cta-row">
+        <a class="btn btn-solid" href="#signup">Get the free weekly letter</a>
+        <a class="btn btn-ghost" href="#pricing">See plans</a>
+      </div>
+      <p class="hero-note">No card required. Built on TRACE, FRED &amp; Bank of Canada data.</p>
+    </div>
+    <figure class="curve-card">
+      <span class="tag">LIVE CURVE</span>
+      <svg viewBox="0 0 460 280" role="img" aria-label="US Treasury yield curve, yields by maturity from 3 months to 30 years">
+        <!-- grid -->
+        <g stroke="#C7CFC6" stroke-width="1">
+          <line x1="48" y1="30" x2="48" y2="230"/><line x1="48" y1="230" x2="440" y2="230"/>
+          <line x1="48" y1="80" x2="440" y2="80" stroke-dasharray="2 5"/>
+          <line x1="48" y1="130" x2="440" y2="130" stroke-dasharray="2 5"/>
+          <line x1="48" y1="180" x2="440" y2="180" stroke-dasharray="2 5"/>
+        </g>
+        <!-- axis labels -->
+        <g fill="#3C4A42" font-size="10">
+          <text x="14" y="84">5.0%</text><text x="14" y="134">4.5%</text><text x="14" y="184">4.0%</text>
+          <text x="60" y="248">3M</text><text x="118" y="248">2Y</text><text x="180" y="248">5Y</text>
+          <text x="246" y="248">10Y</text><text x="330" y="248">20Y</text><text x="416" y="248">30Y</text>
+        </g>
+        <!-- the curve -->
+        <path id="curvePath" d="M 66 96 C 95 140, 105 162, 124 166 S 165 158, 186 148 C 220 132, 235 122, 252 116 S 320 100, 336 96 C 370 89, 400 86, 422 84"
+          fill="none" stroke="#1E5B43" stroke-width="2.5" stroke-linecap="round"/>
+        <!-- tenor markers -->
+        <g fill="#1E5B43">
+          <circle cx="66" cy="96" r="3.5"/><circle cx="124" cy="166" r="3.5"/><circle cx="186" cy="148" r="3.5"/>
+          <circle cx="252" cy="116" r="3.5"/><circle cx="336" cy="96" r="3.5"/><circle cx="422" cy="84" r="3.5"/>
+        </g>
+        <g fill="#122019" font-size="10.5" font-weight="500">
+          <text x="54" y="86">4.93</text><text x="112" y="186">4.21</text><text x="174" y="168">4.38</text>
+          <text x="240" y="106">4.62</text><text x="324" y="86">4.86</text><text x="404" y="74">4.97</text>
+        </g>
+      </svg>
+      <figcaption><span>US TREASURY ACTIVES · SAMPLE</span><span>SOURCE: FRED H.15</span></figcaption>
+    </figure>
+  </div>
+
+  <section id="why">
+    <div class="wrap">
+      <h2>The bond market charges you for being invisible.</h2>
+      <p class="section-lede">Corporate bonds don't trade on an exchange with one public price. They trade dealer-to-dealer, and the price you're shown depends on who's asking. Same bond, same day, two very different fills:</p>
+      <div class="spread">
+        <div class="inst">
+          <p class="who">Institutional print · $2,000,000 block</p>
+          <p class="px">$98.40 <small>YTM 5.42%</small></p>
+          <p class="note">What the trade tape (TRACE) shows professionals paid.</p>
+        </div>
+        <div class="rtl">
+          <p class="who">Retail fill · $25,000 order</p>
+          <p class="px">$99.65 <small>YTM 5.18%</small></p>
+          <p class="note">Roughly 125 bps of markup, silently embedded in the price.</p>
+        </div>
+      </div>
+      <p class="spread-foot">Illustrative example. The markup never appears as a fee — it's just a worse price. Basispoint's fair-value check compares any quote you're shown against recent prints on the tape, so the spread stops being invisible.</p>
+    </div>
+  </section>
+
+  <section id="tools">
+    <div class="wrap">
+      <h2>Tools, not tips.</h2>
+      <p class="section-lede">We don't recommend bonds and we don't sell them. We build the instruments that let you judge them yourself.</p>
+      <div class="features">
+        <div class="feature"><span class="k">SCREEN</span><h3>Bond screener</h3><p>Filter US and Canadian issues by yield, rating, sector, duration, and call features — the way a desk analyst would shortlist.</p></div>
+        <div class="feature"><span class="k">CHECK</span><h3>Fair-value vs. the tape</h3><p>Paste a quote, see how it compares to recent institutional prints on the same bond. Know the markup before you pay it.</p></div>
+        <div class="feature"><span class="k">BUILD</span><h3>Ladder &amp; barbell builder</h3><p>Construct maturity ladders with cash-flow and reinvestment modeling. Compare against GIC ladders and bond ETFs honestly.</p></div>
+        <div class="feature"><span class="k">WATCH</span><h3>Curve &amp; spread monitor</h3><p>US and Canada yield curves, 2s10s, credit spreads — charted daily with plain-language notes on what moved.</p></div>
+        <div class="feature"><span class="k">ALERT</span><h3>Yield &amp; downgrade alerts</h3><p>Set a target yield on a maturity or watch an issuer's rating. Get an email when the market comes to you.</p></div>
+        <div class="feature"><span class="k">LEARN</span><h3>The education library</h3><p>Duration, convexity, callable math, ladders vs. funds — explained for investors, not for a CFA exam.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="pricing">
+    <div class="wrap">
+      <h2>Clip the coupon.</h2>
+      <p class="section-lede">Bond certificates once came with literal coupons you clipped to collect interest. Ours just collect tools. Annual plans get two months free.</p>
+      <div class="coupons">
+        <div class="coupon">
+          <p class="tier">Free</p>
+          <p class="price">$0<small> / forever</small></p>
+          <ul>
+            <li><b>Daily yield curves</b> — US &amp; Canada</li>
+            <li>Screener, 10 results per search</li>
+            <li>1 saved ladder</li>
+            <li>Weekly letter, public archive</li>
+            <li>Full education library</li>
+          </ul>
+          <a class="btn btn-ghost" href="#signup">Start free</a>
+        </div>
+        <div class="coupon featured">
+          <p class="tier">Pro — most clipped</p>
+          <p class="price">$29<small> / month · $290 / yr</small></p>
+          <ul>
+            <li><b>Everything in Free</b>, plus</li>
+            <li>Full screener, saved screens</li>
+            <li><b>Fair-value check</b> vs. TRACE prints</li>
+            <li>Unlimited ladders, reinvestment modeling</li>
+            <li>10 yield &amp; downgrade alerts</li>
+            <li>Full weekly letter + data appendix</li>
+          </ul>
+          <a class="btn btn-solid" href="#signup">Join the waitlist</a>
+        </div>
+        <div class="coupon">
+          <p class="tier">Desk</p>
+          <p class="price">$99<small> / month · $990 / yr</small></p>
+          <ul>
+            <li><b>Everything in Pro</b>, plus</li>
+            <li>API access for your own models</li>
+            <li>Historical curve explorer &amp; exports</li>
+            <li>Unlimited alerts</li>
+            <li>3 seats — built for small RIAs</li>
+          </ul>
+          <a class="btn btn-ghost" href="#signup">Join the waitlist</a>
+        </div>
+      </div>
+      <p class="clip">✂ – – – – – – – – – – – – – – – – – – – – – – – – – – – – – – – – – – – – – – ✂</p>
+    </div>
+  </section>
+
+  <section id="signup">
+    <div class="wrap">
+      <div class="signup">
+        <div>
+          <h2>One chart. One idea. Every Sunday.</h2>
+          <p>The Basispoint letter: what moved in rates and credit this week, why it matters to your ladder, and the one number worth remembering. Free, and the archive stays public.</p>
+        </div>
+        <div>
+          <form class="signup-form" onsubmit="event.preventDefault();this.querySelector('input').value='';alert('Thanks — connect this form to your email provider (see README).');">
+            <input type="email" required placeholder="you@example.com" aria-label="Email address">
+            <button class="btn" type="submit">Subscribe</button>
+          </form>
+          <p class="fine">No spam. Unsubscribe anytime. ~2,400 words max, we promise.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p class="disclaimer"><strong>Important:</strong> Basispoint provides market data, analytics, and education for informational purposes only. Nothing on this site is investment advice, a recommendation, or an offer to buy or sell any security. Bond prices and yields shown may be delayed or illustrative. Investing involves risk, including loss of principal. Consult a registered advisor about your situation.</p>
+    <div class="foot-row">
+      <span>© 2026 BASISPOINT · TORONTO</span>
+      <span>DATA: FRED · US TREASURY · BANK OF CANADA · FINRA TRACE (EOD)</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Demo ticker values — replace with a fetch() to your data API in Phase 1.
+  const demo = {t2:"4.21%", t10:"4.62%", t30:"4.97%", s210:"+41bp", c10:"3.38%", ig:"+96bp", hy:"+318bp"};
+  for (const [id,val] of Object.entries(demo)) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = val;
+  }
+</script>
+</body>
+</html>
