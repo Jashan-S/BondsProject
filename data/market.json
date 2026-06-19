@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-19T00:11:43+00:00",
+  "updated": "2026-06-19T23:38:40+00:00",
   "demo": false,
   "us": {
     "date": "2026-06-17",
@@ -52,37 +52,37 @@
     ]
   },
   "canada": {
-    "date": "2026-06-04",
+    "date": "2026-06-05",
     "curve": [
       {
         "tenor": "2Y",
         "years": 2,
-        "yield": 2.8
+        "yield": 2.87
       },
       {
         "tenor": "3Y",
         "years": 3,
-        "yield": 2.89
+        "yield": 2.96
       },
       {
         "tenor": "5Y",
         "years": 5,
-        "yield": 3.08
+        "yield": 3.14
       },
       {
         "tenor": "7Y",
         "years": 7,
-        "yield": 3.22
+        "yield": 3.28
       },
       {
         "tenor": "10Y",
         "years": 10,
-        "yield": 3.43
+        "yield": 3.48
       },
       {
         "tenor": "30Y",
         "years": 30,
-        "yield": 3.8
+        "yield": 3.83
       }
     ]
   },
