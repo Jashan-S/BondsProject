@@ -1,8 +1,8 @@
 {
-  "updated": "2026-06-30T23:45:35+00:00",
+  "updated": "2026-07-01T23:52:23+00:00",
   "demo": false,
   "us": {
-    "date": "2026-06-29",
+    "date": "2026-06-30",
     "curve": [
       {
         "tenor": "3M",
@@ -12,42 +12,42 @@
       {
         "tenor": "6M",
         "years": 0.5,
-        "yield": 4.0
+        "yield": 4.01
       },
       {
         "tenor": "1Y",
         "years": 1,
-        "yield": 3.97
+        "yield": 3.98
       },
       {
         "tenor": "2Y",
         "years": 2,
-        "yield": 4.1
+        "yield": 4.14
       },
       {
         "tenor": "5Y",
         "years": 5,
-        "yield": 4.14
+        "yield": 4.19
       },
       {
         "tenor": "7Y",
         "years": 7,
-        "yield": 4.24
+        "yield": 4.3
       },
       {
         "tenor": "10Y",
         "years": 10,
-        "yield": 4.38
+        "yield": 4.44
       },
       {
         "tenor": "20Y",
         "years": 20,
-        "yield": 4.86
+        "yield": 4.93
       },
       {
         "tenor": "30Y",
         "years": 30,
-        "yield": 4.86
+        "yield": 4.91
       }
     ]
   },
@@ -87,8 +87,8 @@
     ]
   },
   "spreads": {
-    "us_2s10s_bp": 28,
+    "us_2s10s_bp": 30,
     "ig_oas_bp": 76,
-    "hy_oas_bp": 280
+    "hy_oas_bp": 275
   }
 }
