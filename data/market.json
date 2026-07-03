@@ -1,5 +1,5 @@
 {
-  "updated": "2026-07-02T23:40:07+00:00",
+  "updated": "2026-07-03T23:36:35+00:00",
   "demo": false,
   "us": {
     "date": "2026-07-01",
@@ -52,43 +52,43 @@
     ]
   },
   "canada": {
-    "date": "2026-06-17",
+    "date": "2026-06-18",
     "curve": [
       {
         "tenor": "2Y",
         "years": 2,
-        "yield": 2.82
+        "yield": 2.78
       },
       {
         "tenor": "3Y",
         "years": 3,
-        "yield": 2.92
+        "yield": 2.88
       },
       {
         "tenor": "5Y",
         "years": 5,
-        "yield": 3.08
+        "yield": 3.04
       },
       {
         "tenor": "7Y",
         "years": 7,
-        "yield": 3.22
+        "yield": 3.17
       },
       {
         "tenor": "10Y",
         "years": 10,
-        "yield": 3.42
+        "yield": 3.38
       },
       {
         "tenor": "30Y",
         "years": 30,
-        "yield": 3.82
+        "yield": 3.8
       }
     ]
   },
   "spreads": {
     "us_2s10s_bp": 31,
-    "ig_oas_bp": 76,
-    "hy_oas_bp": 274
+    "ig_oas_bp": 75,
+    "hy_oas_bp": 275
   }
 }
