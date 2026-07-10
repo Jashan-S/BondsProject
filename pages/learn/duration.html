@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bond Duration Explained: The One Number That Predicts Price Moves | Basispoint</title>
+<meta name="description" content="Duration tells you how much a bond's price moves when rates change — the rule of thumb, a worked table, duration vs maturity, and why it matters for ladders and bond funds.">
+<meta property="og:title" content="Bond Duration Explained: The One Number That Predicts Price Moves">
+<meta property="og:description" content="The rule of thumb, a worked table, and why duration matters for ladders and bond funds.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://bondtracker.ca/pages/learn/duration.html">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Besley:wght@400;600;800&family=Public+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="logo" href="../../index.html">Basispoint<small>FIXED INCOME, OPENED</small></a>
+    <nav class="nav-links">
+      <a href="../yield-curve.html">Yield curves</a>
+      <a href="../2s10s.html">2s10s</a>
+      <a href="../credit-spreads.html">Credit spreads</a>
+      <a href="index.html">Learn</a>
+      <a href="../../index.html#signup">Get the letter</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <p class="eyebrow">Learn · Fixed income basics</p>
+    <h1>Duration: the one number that predicts a bond's price moves</h1>
+    <p class="lede">If you learn a single piece of bond math, make it this one. Duration converts "rates went up" into "here's roughly what happened to my money."</p>
+    <p class="stamp">EDUCATION · NOT INVESTMENT ADVICE</p>
+
+    <h2>The rule of thumb</h2>
+    <p>Bond prices move opposite to interest rates: when new bonds pay more, the old ones paying less are worth less, and vice versa. Duration measures <em>how much</em>. The working rule:</p>
+    <p><strong>Price change ≈ −Duration × change in rates.</strong></p>
+    <p>A bond (or bond fund) with a duration of 7 loses roughly 7% of its value if rates rise one percentage point, and gains roughly 7% if rates fall one point. That's the whole trick. Duration is a risk dial: low duration means rate moves barely touch you; high duration means you feel every basis point, in both directions.</p>
+
+    <table>
+      <caption>Approximate price impact of rate changes</caption>
+      <thead><tr><th>Duration</th><th>Rates +1%</th><th>Rates +2%</th><th>Rates −1%</th></tr></thead>
+      <tbody>
+        <tr><td>1 (T-bills, short GICs)</td><td>−1%</td><td>−2%</td><td>+1%</td></tr>
+        <tr><td>3 (short bond fund)</td><td>−3%</td><td>−6%</td><td>+3%</td></tr>
+        <tr><td>7 (aggregate bond fund)</td><td>−7%</td><td>−14%</td><td>+7%</td></tr>
+        <tr><td>17 (30-year bond)</td><td>−17%</td><td>−34%</td><td>+17%</td></tr>
+      </tbody>
+    </table>
+    <p class="note">Approximations; accurate for small moves. For large moves the true loss is a bit smaller and the true gain a bit larger — a curvature effect called convexity that works mildly in your favor.</p>
+    <p>The table explains a fact that shocked a lot of investors in 2022: "safe" long-term government bonds can lose a third of their value without a single missed payment. Nothing defaulted — duration simply did what duration does when rates jump. Credit risk and rate risk are different animals, and duration only measures the second.</p>
+
+    <h2>What duration actually is (and why it's not maturity)</h2>
+    <p>Formally, duration is the weighted-average time until you receive a bond's cash flows — every coupon and the final principal, each weighted by its share of total value. That's why duration is always <em>shorter</em> than maturity for a coupon-paying bond: the coupons arrive early and drag the average forward. A 10-year bond with healthy coupons might have a duration around 8; a 10-year strip (no coupons, one payment at the end) has a duration of exactly 10, which also makes strips the most rate-sensitive bonds per year of maturity.</p>
+    <p>Two bonds with the same maturity can therefore carry different rate risk: the low-coupon one has the higher duration, because more of its value sits at the far end. This is also why bond <em>funds</em> quote duration in their fact sheets — a fund never matures, so duration is the honest way to state its rate sensitivity. When you see "effective duration: 6.4" on a fund page, read it as "a one-point rate rise costs me about 6.4%."</p>
+
+    <h2>How investors actually use it</h2>
+    <p><strong>Matching money to time.</strong> The classic principle is to keep duration at or below your horizon. Money needed in two years doesn't belong in duration-7 funds; a spike in rates could hand you a loss precisely when you need to cash out. Money invested for decades can afford high duration and gets paid extra for it when the <a href="../yield-curve.html">curve</a> is steep.</p>
+    <p><strong>Understanding your ladder.</strong> A ladder's overall duration is roughly the average of its rungs — a 1-to-5-year ladder sits near 3. Each year, the whole ladder's duration shortens as bonds age, then resets when the maturing rung is reinvested long. That self-adjusting quality is a quiet reason ladders are comfortable to hold: an individual bond's duration marches steadily to zero at maturity, where the fund's duration stays perpetually high.</p>
+    <p><strong>Reading the market's bets.</strong> When you hear that investors are "extending duration," it means they're buying longer bonds to lock in yields — a bet rates will fall. "Reducing duration" is the opposite: hiding in short paper because rate rises would hurt. The positioning itself moves the <a href="../2s10s.html">2s10s spread</a> you can watch on this site.</p>
+
+    <h2>The honest caveats</h2>
+    <p>Duration assumes the whole curve moves in parallel — in reality short and long rates often move differently, so a duration-3 portfolio can behave unexpectedly when the curve twists. It says nothing about <a href="../credit-spreads.html">credit risk</a>: a corporate bond can hold rate risk perfectly steady while its spread blows out. And callable bonds complicate everything, because the issuer's right to repay early changes the cash flows duration is averaging. Rules of thumb are for orientation; the exact math is what tools are for.</p>
+
+    <p class="note">One number, one chart, one idea a week — <a href="../../index.html#signup">the free Basispoint letter</a>.</p>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p class="disclaimer"><strong>Important:</strong> This article is general education, not investment advice, and doesn't consider your circumstances. Figures are illustrative approximations. Investing involves risk, including loss of principal.</p>
+    <div class="foot-row">
+      <span>© 2026 BASISPOINT · TORONTO</span>
+      <span>LEARN LIBRARY</span>
+    </div>
+  </div>
+</footer>
+</body>
+</html>
