@@ -5,7 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Basispoint — Fixed income intelligence without the terminal</title>
 <meta name="description" content="Bond market data, screeners, and ladder tools for self-directed investors. See the yields the terminal crowd sees, at one thousandth of the price.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
+<meta property="og:title" content="Basispoint — Fixed income intelligence without the terminal">
+<meta property="og:description" content="Live yield curves, bond screeners, and ladder tools for self-directed investors.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://bondtracker.ca/">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Besley:ital,wght@0,400;0,600;0,800;1,400&family=Public+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -146,8 +150,8 @@
     <a class="logo" href="#">Basispoint<small>FIXED INCOME, OPENED</small></a>
     <nav class="nav-links">
       <a href="pages/yield-curve.html">Yield curves</a>
-      <a href="#why">Why bonds</a>
-      <a href="#tools">Tools</a>
+      <a href="pages/2s10s.html">2s10s</a>
+      <a href="pages/credit-spreads.html">Credit spreads</a>
       <a href="#pricing">Pricing</a>
       <a href="#signup">Get the letter</a>
     </nav>
@@ -396,5 +400,10 @@
     drawCurve(m.us?.curve, m.us?.date || "", !!m.demo);
   })();
 </script>
+  <!-- ANALYTICS: create a free account at goatcounter.com, then uncomment and
+       replace YOURCODE with your site code. No cookies, no banner needed.
+  <script data-goatcounter="https://YOURCODE.goatcounter.com/count"
+          async src="//gc.zgo.at/count.js"></script>
+  -->
 </body>
 </html>

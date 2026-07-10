@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2s10s Spread Today — Is the Yield Curve Inverted? | Basispoint</title>
+<meta name="description" content="The 2s10s Treasury spread (10-year minus 2-year yield) updated every market day, with history and a plain-language guide to what inversion means for recessions and investors.">
+<meta property="og:title" content="2s10s Spread Today — Is the Yield Curve Inverted?">
+<meta property="og:description" content="The most-watched recession signal in finance, updated every market day.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://bondtracker.ca/pages/2s10s.html">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Besley:wght@400;600;800&family=Public+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<style>
+  .bignum{font-family:var(--mono);font-weight:500;font-size:clamp(44px,7vw,72px);letter-spacing:-.02em;margin:6px 0 2px}
+  .bignum.up{color:var(--green)} .bignum.down{color:var(--seal)}
+  .verdict{font-family:var(--mono);font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft)}
+  .readout{display:flex;gap:48px;flex-wrap:wrap;align-items:end;margin:8px 0 12px}
+  .mini{font-family:var(--mono);font-size:14px;color:var(--ink-soft);padding-bottom:14px}
+  .mini b{color:var(--ink);font-weight:500}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="logo" href="../index.html">Basispoint<small>FIXED INCOME, OPENED</small></a>
+    <nav class="nav-links">
+      <a href="yield-curve.html">Yield curves</a>
+      <a href="2s10s.html">2s10s</a>
+      <a href="credit-spreads.html">Credit spreads</a>
+      <a href="../index.html#pricing">Pricing</a>
+      <a href="../index.html#signup">Get the letter</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <p class="eyebrow">Recession watch · Updated every market day</p>
+    <h1>The 2s10s spread today</h1>
+    <p class="lede">The 10-year Treasury yield minus the 2-year — the most-watched recession signal in finance. Positive is normal; below zero is an inverted curve.</p>
+    <p class="stamp" id="stamp">Loading latest data…</p>
+
+    <div class="readout">
+      <div>
+        <p class="bignum" id="bignum">—</p>
+        <p class="verdict" id="verdict">&nbsp;</p>
+      </div>
+      <p class="mini">US 10Y <b id="y10">—</b><br>US 2Y <b id="y2">—</b></p>
+    </div>
+
+    <figure class="chart-card chart-wide">
+      <span class="tag">2s10s HISTORY</span>
+      <div id="histChart"></div>
+      <figcaption><span id="histCap">DAILY CLOSES</span><span>SOURCE: FRED H.15 (COMPUTED)</span></figcaption>
+    </figure>
+
+    <h2>What the 2s10s spread means</h2>
+    <p>Lenders normally demand more yield to lock money away for ten years than for two, so the 10-year usually pays more and the spread sits comfortably positive. When the spread goes <strong>negative</strong> — an "inverted" curve — short-term money pays better than long-term money. That's the market saying it expects the central bank to cut rates substantially in the years ahead, and historically the reason for aggressive cuts has been a weakening economy.</p>
+    <p>The signal earned its reputation honestly: a 2s10s inversion preceded every US recession of the past half-century, typically by six to twenty-four months. It's also famous for the caveats. The lead time is long and unreliable, the curve usually <em>un</em>-inverts before a downturn actually begins (short rates fall as cuts get priced in), and an unusual rate cycle can invert the curve without a recession following on schedule. Treat it as a barometer, not an alarm clock.</p>
+
+    <h2>What it means for a bond investor</h2>
+    <p>Beyond recession forecasting, the spread is a practical menu-pricing tool. A flat or inverted curve means extending maturity pays you little or nothing extra — the market is effectively giving away short-term yield, which is why T-bill and short-ladder strategies get popular during inversions. A steep, positive spread means you're being paid meaningfully to take duration risk, which favors extending ladders outward. Watching the spread's <em>direction</em> — steepening or flattening — tells you which way that trade-off is drifting.</p>
+
+    <p class="note">Get the week's spread moves with a plain-language note every Sunday — <a href="../index.html#signup">the free Basispoint letter</a>.</p>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p class="disclaimer"><strong>Important:</strong> Basispoint provides market data and education for informational purposes only. Nothing on this page is investment advice or a recommendation. Figures are end-of-day and may be delayed. Investing involves risk, including loss of principal.</p>
+    <div class="foot-row">
+      <span>© 2026 BASISPOINT · TORONTO</span>
+      <span>DATA: FRED (SPREAD COMPUTED FROM H.15 CONSTANT MATURITY YIELDS)</span>
+    </div>
+  </div>
+</footer>
+
+<script src="../assets/charts.js"></script>
+<script>
+(async () => {
+  const put = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+  const year = new Date().getFullYear();
+  const getJSON = async p => { try { const r = await fetch(p, {cache:"no-store"}); return r.ok ? r.json() : null; } catch(e){ return null; } };
+
+  const market = await getJSON("../data/market.json");
+  if (!market) { put("stamp", "Data temporarily unavailable."); return; }
+
+  const s = market.spreads || {};
+  const us = Object.fromEntries((market.us?.curve || []).map(p => [p.tenor, p.yield]));
+  const bp = s.us_2s10s_bp;
+
+  put("stamp", market.demo
+    ? "Sample data — live figures appear after the first pipeline run."
+    : `As of US close ${market.us?.date || "—"} · Updated nightly`);
+
+  if (bp != null) {
+    const el = document.getElementById("bignum");
+    el.textContent = (bp >= 0 ? "+" : "") + bp + "bp";
+    el.classList.add(bp >= 0 ? "up" : "down");
+    put("verdict", bp >= 0 ? "Positive — curve not inverted" : "Negative — curve inverted");
+  }
+  put("y10", us["10Y"] != null ? us["10Y"].toFixed(2) + "%" : "—");
+  put("y2",  us["2Y"]  != null ? us["2Y"].toFixed(2)  + "%" : "—");
+
+  const hist = await getJSON(`../data/history/spreads-${year}.json`);
+  const series = (hist?.days || [])
+    .filter(d => d.us_2s10s_bp != null)
+    .map(d => ({ date: d.date, value: d.us_2s10s_bp }));
+  bpLineChart(document.getElementById("histChart"), series,
+    { label: "2s10s spread history", unit: "bp", minPad: 5 });
+  if (series.length) put("histCap", `${series.length} DAYS RECORDED`);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Corporate Credit Spreads Today — IG &amp; High Yield | Basispoint</title>
+<meta name="description" content="US investment-grade and high-yield credit spreads (ICE BofA option-adjusted spreads) updated every market day, with history and a guide to what spreads say about risk.">
+<meta property="og:title" content="Corporate Credit Spreads Today — IG &amp; High Yield">
+<meta property="og:description" content="What corporate bond spreads are saying about risk appetite, updated daily.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://bondtracker.ca/pages/credit-spreads.html">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Besley:wght@400;600;800&family=Public+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<style>
+  .readout{display:flex;gap:56px;flex-wrap:wrap;margin:8px 0 12px}
+  .bignum{font-family:var(--mono);font-weight:500;font-size:clamp(36px,5.5vw,56px);letter-spacing:-.02em;margin:4px 0 2px;color:var(--green)}
+  .bignum.hy{color:var(--seal)}
+  .verdict{font-family:var(--mono);font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="logo" href="../index.html">Basispoint<small>FIXED INCOME, OPENED</small></a>
+    <nav class="nav-links">
+      <a href="yield-curve.html">Yield curves</a>
+      <a href="2s10s.html">2s10s</a>
+      <a href="credit-spreads.html">Credit spreads</a>
+      <a href="../index.html#pricing">Pricing</a>
+      <a href="../index.html#signup">Get the letter</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <p class="eyebrow">Risk appetite · Updated every market day</p>
+    <h1>US corporate credit spreads today</h1>
+    <p class="lede">How much extra yield corporate bonds pay over Treasuries — investment grade and high yield, measured by the ICE BofA option-adjusted spread indices.</p>
+    <p class="stamp" id="stamp">Loading latest data…</p>
+
+    <div class="readout">
+      <div>
+        <p class="verdict">Investment grade</p>
+        <p class="bignum" id="igNum">—</p>
+      </div>
+      <div>
+        <p class="verdict">High yield</p>
+        <p class="bignum hy" id="hyNum">—</p>
+      </div>
+    </div>
+
+    <div class="card-grid">
+      <figure class="chart-card">
+        <span class="tag">IG SPREAD HISTORY</span>
+        <div id="igChart"></div>
+        <figcaption><span id="igCap">DAILY CLOSES</span><span>ICE BOFA VIA FRED</span></figcaption>
+      </figure>
+      <figure class="chart-card">
+        <span class="tag">HY SPREAD HISTORY</span>
+        <div id="hyChart"></div>
+        <figcaption><span id="hyCap">DAILY CLOSES</span><span>ICE BOFA VIA FRED</span></figcaption>
+      </figure>
+    </div>
+
+    <h2>What a credit spread is</h2>
+    <p>When a company borrows, it pays the Treasury rate <em>plus</em> a premium for the risk that it might not pay you back. That premium is the credit spread, quoted in basis points (one basis point = 0.01%). An investment-grade spread of 96bp means high-quality corporate bonds yield about 0.96% more than comparable Treasuries; a high-yield ("junk") spread of 318bp means the riskiest tier pays about 3.18% extra.</p>
+    <p>Spreads are the bond market's fear gauge. In calm, greedy markets they compress — investors accept thin premiums to pick up yield. In stressed markets they blow out, sometimes violently: high-yield spreads have gone from under 300bp to over 1,000bp in past crises. Because spreads price <em>risk itself</em>, they often move before equity markets acknowledge trouble, which is why professionals watch them even when they own no corporate bonds.</p>
+
+    <h2>How investors use them</h2>
+    <p>For a bond buyer, the spread is your compensation for credit risk — so the question is always whether today's spread pays enough for it. Tight spreads (low numbers by historical standards) mean you're getting little extra for taking corporate risk, and staying in Treasuries or GICs costs you little. Wide spreads mean corporate bonds are on sale relative to their risk, which has historically been the better time to extend into credit. The <strong>gap between HY and IG</strong> tells its own story: when it stretches, markets are differentiating sharply between safe and risky borrowers — classic late-cycle behavior.</p>
+    <p>One caution for retail investors: index spreads describe the <em>market average</em>. Any individual bond can be priced far from fair — which, on retail-sized trades, is common. Comparing a specific quote against actual trade prints is exactly the fair-value tooling on our <a href="../index.html#tools">roadmap</a>.</p>
+
+    <p class="note">Spread moves and what drove them, every Sunday — <a href="../index.html#signup">the free Basispoint letter</a>.</p>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p class="disclaimer"><strong>Important:</strong> Basispoint provides market data and education for informational purposes only. Nothing on this page is investment advice or a recommendation. Figures are end-of-day and may be delayed. Investing involves risk, including loss of principal.</p>
+    <div class="foot-row">
+      <span>© 2026 BASISPOINT · TORONTO</span>
+      <span>DATA: ICE BOFA OAS INDICES VIA FRED (BAMLC0A0CM, BAMLH0A0HYM2)</span>
+    </div>
+  </div>
+</footer>
+
+<script src="../assets/charts.js"></script>
+<script>
+(async () => {
+  const put = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+  const year = new Date().getFullYear();
+  const getJSON = async p => { try { const r = await fetch(p, {cache:"no-store"}); return r.ok ? r.json() : null; } catch(e){ return null; } };
+
+  const market = await getJSON("../data/market.json");
+  if (!market) { put("stamp", "Data temporarily unavailable."); return; }
+  const s = market.spreads || {};
+
+  put("stamp", market.demo
+    ? "Sample data — live figures appear after the first pipeline run."
+    : `As of US close ${market.us?.date || "—"} · Updated nightly`);
+  if (s.ig_oas_bp != null) put("igNum", "+" + s.ig_oas_bp + "bp");
+  if (s.hy_oas_bp != null) put("hyNum", "+" + s.hy_oas_bp + "bp");
+
+  const hist = await getJSON(`../data/history/spreads-${year}.json`);
+  const days = hist?.days || [];
+  const seriesOf = key => days.filter(d => d[key] != null).map(d => ({ date: d.date, value: d[key] }));
+
+  const ig = seriesOf("ig_oas_bp"), hy = seriesOf("hy_oas_bp");
+  bpLineChart(document.getElementById("igChart"), ig, { label: "Investment grade spread history", unit: "bp", minPad: 5 });
+  bpLineChart(document.getElementById("hyChart"), hy, { label: "High yield spread history", unit: "bp", minPad: 10 });
+  if (ig.length) put("igCap", `${ig.length} DAYS RECORDED`);
+  if (hy.length) put("hyCap", `${hy.length} DAYS RECORDED`);
+})();
+</script>
+</body>
+</html>
