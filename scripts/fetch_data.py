@@ -77,10 +77,19 @@ def fred_latest(series_id: str):
 
 
 def boc_latest(series_id: str):
-    """Return (value, date) for the most recent non-empty observation."""
+    """Return (value, date) for the most recent non-empty observation.
+
+    Valet's `recent=N` does not guarantee observation order, so never assume
+    it: sort by date descending ourselves, then take the first real value.
+    """
     url = f"https://www.bankofcanada.ca/valet/observations/{series_id}/json?recent=10"
     data = get_json(url)
-    for obs in reversed(data.get("observations", [])):  # newest last
+    observations = sorted(
+        data.get("observations", []),
+        key=lambda o: o.get("d", ""),
+        reverse=True,  # newest first
+    )
+    for obs in observations:
         cell = obs.get(series_id) or {}
         if cell.get("v") not in (None, ""):
             return float(cell["v"]), obs.get("d")
