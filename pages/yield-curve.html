@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>US &amp; Canada Government Yield Curves Today — Updated Daily | Basispoint</title>
+<meta name="description" content="Today's US Treasury and Government of Canada yield curves, every tenor from 3 months to 30 years, with daily changes and the 2s10s spread. Free, updated every market day.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Besley:wght@400;600;800&family=Public+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="logo" href="../index.html">Basispoint<small>FIXED INCOME, OPENED</small></a>
+    <nav class="nav-links">
+      <a href="../index.html#why">Why bonds</a>
+      <a href="../index.html#tools">Tools</a>
+      <a href="../index.html#pricing">Pricing</a>
+      <a href="../index.html#signup">Get the letter</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <p class="eyebrow">Government bond yields · Updated every market day</p>
+    <h1>US &amp; Canada yield curves today</h1>
+    <p class="lede">Every benchmark tenor from 3 months to 30 years, straight from Federal Reserve (H.15) and Bank of Canada data — the same series professionals chart, updated nightly after the close.</p>
+    <p class="stamp" id="stamp">Loading latest data…</p>
+
+    <div class="card-grid">
+      <figure class="chart-card">
+        <span class="tag">UNITED STATES</span>
+        <div id="usCurve"></div>
+        <figcaption><span id="usCap">US TREASURY CURVE</span><span>SOURCE: FRED H.15</span></figcaption>
+      </figure>
+      <figure class="chart-card">
+        <span class="tag">CANADA</span>
+        <div id="caCurve"></div>
+        <figcaption><span id="caCap">GOVERNMENT OF CANADA CURVE</span><span>SOURCE: BANK OF CANADA</span></figcaption>
+      </figure>
+    </div>
+
+    <div class="card-grid">
+      <div>
+        <table id="usTable">
+          <caption>US Treasury yields</caption>
+          <thead><tr><th>Tenor</th><th>Yield</th><th>1-day Δ</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div>
+        <table id="caTable">
+          <caption>Government of Canada yields</caption>
+          <thead><tr><th>Tenor</th><th>Yield</th><th>1-day Δ</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+    <p class="note">Daily change appears once at least two days of history have been recorded by the nightly pipeline.</p>
+
+    <h2>The US 10-year over time</h2>
+    <p>The 10-year Treasury yield is the reference rate for the world: mortgages, corporate borrowing costs, and equity valuations all key off it. History below accumulates one point per market day.</p>
+    <figure class="chart-card chart-wide">
+      <span class="tag">US 10Y HISTORY</span>
+      <div id="tenYearHist"></div>
+      <figcaption><span>DAILY CLOSES</span><span id="histCap">SOURCE: FRED H.15</span></figcaption>
+    </figure>
+
+    <h2>How to read a yield curve</h2>
+    <p>The yield curve plots what the government pays to borrow at each maturity. A <strong>normal</strong> curve slopes upward — lenders demand more yield to lock money up longer. An <strong>inverted</strong> curve, where short rates exceed long rates, means markets expect rate cuts ahead, historically because a slowdown is coming; the 2-year vs 10-year gap ("2s10s," shown in the tables above via the 2Y and 10Y rows) is the most-watched recession signal in finance. A <strong>steepening</strong> curve often accompanies recovery and rising inflation expectations.</p>
+    <p>For an investor, the curve is a menu. Its shape tells you where you're being paid to take duration risk: when the curve is flat, extending from a 2-year to a 10-year bond adds interest-rate risk for little extra yield; when it's steep, longer maturities compensate you meaningfully. Bond ladders — spreading purchases across maturities — are a way of buying the whole menu instead of guessing.</p>
+    <p>The US and Canadian curves usually rhyme but rarely match, because the Federal Reserve and the Bank of Canada move on different schedules and the two economies carry different inflation and growth mixes. The gap between the two 10-year yields is effectively the market's running commentary on those differences — and a factor in the USD/CAD exchange rate.</p>
+
+    <p class="note">Want this curve in your inbox with a plain-language note on what moved? <a href="../index.html#signup">Get the free weekly letter.</a></p>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p class="disclaimer"><strong>Important:</strong> Basispoint provides market data and education for informational purposes only. Nothing on this page is investment advice or a recommendation. Yields shown are end-of-day figures and may be delayed. Investing involves risk, including loss of principal.</p>
+    <div class="foot-row">
+      <span>© 2026 BASISPOINT · TORONTO</span>
+      <span>DATA: FRED · BANK OF CANADA</span>
+    </div>
+  </div>
+</footer>
+
+<script src="../assets/charts.js"></script>
+<script>
+(async () => {
+  const put = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+  const year = new Date().getFullYear();
+
+  async function getJSON(path) {
+    try {
+      const r = await fetch(path, { cache: "no-store" });
+      return r.ok ? await r.json() : null;
+    } catch (e) { return null; }
+  }
+
+  const market = await getJSON("../data/market.json");
+  if (!market) { put("stamp", "Data temporarily unavailable."); return; }
+
+  const usHist = await getJSON(`../data/history/us-curve-${year}.json`);
+  const caHist = await getJSON(`../data/history/ca-curve-${year}.json`);
+
+  put("stamp", market.demo
+    ? "Sample data — live figures appear after the first pipeline run."
+    : `US close: ${market.us?.date || "—"} · Canada close: ${market.canada?.date || "—"} · Updated nightly`);
+
+  bpCurveChart(document.getElementById("usCurve"), market.us?.curve, { label: "US Treasury yield curve" });
+  bpCurveChart(document.getElementById("caCurve"), market.canada?.curve, { label: "Government of Canada yield curve" });
+  if (market.us?.date && !market.demo) put("usCap", "US TREASURY CURVE · " + market.us.date);
+  if (market.canada?.date && !market.demo) put("caCap", "GOC CURVE · " + market.canada.date);
+
+  // Previous-day yields from history (second-to-last recorded day)
+  function prevDay(hist) {
+    const days = hist?.days || [];
+    return days.length >= 2 ? days[days.length - 2].yields : null;
+  }
+
+  function fillTable(tableId, curve, prev) {
+    const tbody = document.querySelector(`#${tableId} tbody`);
+    if (!tbody) return;
+    tbody.innerHTML = (curve || []).map(p => {
+      let delta = "—", cls = "";
+      if (prev && prev[p.tenor] != null && p.yield != null) {
+        const bp = Math.round((p.yield - prev[p.tenor]) * 100);
+        delta = (bp >= 0 ? "+" : "") + bp + "bp";
+        cls = bp > 0 ? "up" : bp < 0 ? "down" : "";
+      }
+      return `<tr><td>${p.tenor}</td><td>${p.yield?.toFixed(2)}%</td><td class="${cls}">${delta}</td></tr>`;
+    }).join("");
+  }
+
+  fillTable("usTable", market.us?.curve, prevDay(usHist));
+  fillTable("caTable", market.canada?.curve, prevDay(caHist));
+
+  // 10Y history line
+  const series = (usHist?.days || [])
+    .filter(d => d.yields && d.yields["10Y"] != null)
+    .map(d => ({ date: d.date, value: d.yields["10Y"] }));
+  bpLineChart(document.getElementById("tenYearHist"), series, { label: "US 10-year Treasury yield history" });
+  if (series.length) put("histCap", `${series.length} DAYS RECORDED · FRED H.15`);
+})();
+</script>
+</body>
+</html>
