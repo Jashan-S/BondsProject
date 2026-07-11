@@ -1,5 +1,179 @@
 {
-  "updated": "2026-07-10T00:00:00+00:00",
-  "demo": true,
-  "source": "seed"
+  "updated": "2026-07-11T04:05:26+00:00",
+  "demo": false,
+  "source": "FINRA Query API (TRACE aggregates)",
+  "breadth": {
+    "date": "2024-01-22",
+    "rows": [
+      {
+        "declines": 3304,
+        "totalVolume": 35396.86397,
+        "advances": 6886,
+        "unchanged": 88,
+        "totalTrades": 10929,
+        "tradeReportDate": "2024-01-22",
+        "fiftyTwoWeekHigh": 667,
+        "productCategory": "all securities",
+        "fiftyTwoWeekLow": 54
+      },
+      {
+        "declines": 2648,
+        "totalVolume": 28857.617724,
+        "advances": 5775,
+        "unchanged": 56,
+        "totalTrades": 8722,
+        "tradeReportDate": "2024-01-22",
+        "fiftyTwoWeekHigh": 284,
+        "productCategory": "investment grade",
+        "fiftyTwoWeekLow": 29
+      },
+      {
+        "declines": 589,
+        "totalVolume": 5350.497372,
+        "advances": 960,
+        "unchanged": 29,
+        "totalTrades": 1977,
+        "tradeReportDate": "2024-01-22",
+        "fiftyTwoWeekHigh": 356,
+        "productCategory": "high yield",
+        "fiftyTwoWeekLow": 22
+      },
+      {
+        "declines": 67,
+        "totalVolume": 1187.9713,
+        "advances": 151,
+        "unchanged": 3,
+        "totalTrades": 230,
+        "tradeReportDate": "2024-01-22",
+        "fiftyTwoWeekHigh": 27,
+        "productCategory": "convertibles",
+        "fiftyTwoWeekLow": 3
+      }
+    ]
+  },
+  "sentiment": {
+    "date": "2023-12-18",
+    "rows": [
+      {
+        "totalVolume": 32820.13771,
+        "totalTransactions": 128385,
+        "totalTrades": 11473,
+        "tradeReportDate": "2023-12-18",
+        "tradeType": "all securities",
+        "productCategory": "all securities"
+      },
+      {
+        "totalVolume": 10648.52102,
+        "totalTransactions": 25886,
+        "totalTrades": 8222,
+        "tradeReportDate": "2023-12-18",
+        "tradeType": "all securities",
+        "productCategory": "customer buy"
+      },
+      {
+        "totalVolume": 10493.67813,
+        "totalTransactions": 38825,
+        "totalTrades": 8440,
+        "tradeReportDate": "2023-12-18",
+        "tradeType": "all securities",
+        "productCategory": "customer sell"
+      },
+      {
+        "totalVolume": 1200.08115,
+        "totalTransactions": 2845,
+        "totalTrades": 2068,
+        "tradeReportDate": "2023-12-18",
+        "tradeType": "all securities",
+        "productCategory": "affiliate buy"
+      },
+      {
+        "totalVolume": 1416.79049,
+        "totalTransactions": 4795,
+        "totalTrades": 3003,
+        "tradeReportDate": "2023-12-18",
+        "tradeType": "all securities",
+        "productCategory": "affiliate sell"
+      },
+      {
+        "totalVolume": 9061.06692,
+        "totalTransactions": 56034,
+        "totalTrades": 9416,
+        "tradeReportDate": "2023-12-18",
+        "tradeType": "all securities",
+        "productCategory": "inter-dealer"
+      },
+      {
+        "totalVolume": 27291.03869,
+        "totalTransactions": 109096,
+        "totalTrades": 8989,
+        "tradeReportDate": "2023-12-18",
+        "tradeType": "investment grade",
+        "productCategory": "all securities"
+      },
+      {
+        "totalVolume": 8725.90753,
+        "totalTransactions": 21115,
+        "totalTrades": 6472,
+        "tradeReportDate": "2023-12-18",
+        "tradeType": "investment grade",
+        "productCategory": "customer buy"
+      },
+      {
+        "totalVolume": 8541.7753,
+        "totalTransactions": 33546,
+        "totalTrades": 7053,
+        "tradeReportDate": "2023-12-18",
+        "tradeType": "investment grade",
+        "productCategory": "customer sell"
+      },
+      {
+        "totalVolume": 902.39388,
+        "totalTransactions": 2306,
+        "totalTrades": 1724,
+        "tradeReportDate": "2023-12-18",
+        "tradeType": "investment grade",
+        "productCategory": "affiliate buy"
+      },
+      {
+        "totalVolume": 1109.63162,
+        "totalTransactions": 3997,
+        "totalTrades": 2369,
+        "tradeReportDate": "2023-12-18",
+        "tradeType": "investment grade",
+        "productCategory": "affiliate sell"
+      },
+      {
+        "totalVolume": 8011.33035,
+        "totalTransactions": 48132,
+        "totalTrades": 7699,
+        "tradeReportDate": "2023-12-18",
+        "tradeType": "investment grade",
+        "productCategory": "inter-dealer"
+      },
+      {
+        "totalVolume": 3998.15969,
+        "totalTransactions": 17460,
+        "totalTrades": 2053,
+        "tradeReportDate": "2023-12-18",
+        "tradeType": "high yield",
+        "productCategory": "all securities"
+      },
+      {
+        "totalVolume": 1271.92301,
+        "totalTransactions": 4031,
+        "totalTrades": 1417,
+        "tradeReportDate": "2023-12-18",
+        "tradeType": "high yield",
+        "productCategory": "customer buy"
+      },
+      {
+        "totalVolume": 1316.41234,
+        "totalTransactions": 4795,
+        "totalTrades": 1191,
+        "tradeReportDate": "2023-12-18",
+        "tradeType": "high yield",
+        "productCategory": "customer sell"
+      }
+    ]
+  }
 }
