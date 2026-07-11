@@ -27,6 +27,12 @@ jobs:
       - name: Record history snapshot
         run: python scripts/fetch_history.py
 
+      - name: Fetch TRACE corporate aggregates
+        env:
+          FINRA_API_CLIENT_ID: ${{ secrets.FINRA_API_CLIENT_ID }}
+          FINRA_API_CLIENT_SECRET: ${{ secrets.FINRA_API_CLIENT_SECRET }}
+        run: python scripts/fetch_trace.py
+
       - name: Rebuild sitemap
         run: python scripts/build_sitemap.py
 
@@ -38,3 +44,6 @@ jobs:
           git diff --cached --quiet && echo "No changes" && exit 0
           git commit -m "Update market data [skip ci]"
           git push
+
+      - name: Freshness guard (fails loudly if sources stale)
+        run: python scripts/check_freshness.py

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>US Corporate Bond Market Today — Activity &amp; Most Active Bonds | Basispoint</title>
+<meta name="description" content="Daily US corporate bond market activity from FINRA TRACE: advances and declines, trading volume, and the most actively traded investment-grade and high-yield bonds.">
+<meta property="og:title" content="US Corporate Bond Market Today">
+<meta property="og:description" content="Daily TRACE market activity: breadth, volume, and the most active corporate bonds.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://bondtracker.ca/pages/corporate-bonds.html">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Besley:wght@400;600;800&family=Public+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<style>
+  .seg-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;margin:26px 0}
+  .seg{background:#FBFBF8;border:1px solid var(--rule);border-radius:4px;padding:20px 22px}
+  .seg h3{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--green);font-weight:500;margin-bottom:12px}
+  .seg dl{display:grid;grid-template-columns:auto auto;gap:5px 14px;font-size:14px}
+  .seg dt{color:var(--ink-soft)}
+  .seg dd{font-family:var(--mono);text-align:right}
+  .tbl-scroll{overflow-x:auto;margin:22px 0 6px}
+  .tbl-scroll table{max-width:none;min-width:640px}
+  #pending{background:var(--paper-deep);border:1px dashed var(--rule);border-radius:4px;padding:22px;font-family:var(--mono);font-size:13.5px;color:var(--ink-soft);margin:26px 0}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="logo" href="../index.html">Basispoint<small>FIXED INCOME, OPENED</small></a>
+    <nav class="nav-links">
+      <a href="yield-curve.html">Yield curves</a>
+      <a href="2s10s.html">2s10s</a>
+      <a href="credit-spreads.html">Credit spreads</a>
+      <a href="corporate-bonds.html">Corporates</a>
+      <a href="ladder-builder.html">Ladder tool</a>
+      <a href="learn/index.html">Learn</a>
+      <a href="../index.html#signup">Get the letter</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <p class="eyebrow">Corporate bonds · TRACE aggregates · Updated every market day</p>
+    <h1>The US corporate bond market today</h1>
+    <p class="lede">Where equities have a ticker tape, corporate bonds have TRACE — FINRA's record of every reported trade. This page distills the day's aggregate activity: how broadly the market rose or fell, how much traded, and which bonds everyone was trading.</p>
+    <p class="stamp" id="stamp">Loading latest data…</p>
+
+    <div id="pending" hidden>Corporate data pipeline is configured but hasn't completed its first run yet. Aggregates appear here automatically once it does.</div>
+
+    <div id="breadthWrap" hidden>
+      <h2>Market breadth</h2>
+      <p>Advances vs declines and total volume, by market segment — the corporate bond market's daily scoreboard.</p>
+      <div class="seg-grid" id="segGrid"></div>
+    </div>
+
+    <div id="activeWrap" hidden>
+      <h2>Most active bonds</h2>
+      <p>The issues with the heaviest reported trading — typically large, liquid benchmark bonds from household-name issuers. Heavy activity usually means tighter pricing; thinly traded bonds are where retail markups hide.</p>
+      <div class="tbl-scroll">
+        <table id="activeTable"><thead></thead><tbody></tbody></table>
+      </div>
+      <p class="note" id="activeNote"></p>
+    </div>
+
+    <h2>Why aggregate data first</h2>
+    <p>Everything above is <em>derived, aggregate</em> information — market-level statistics computed from TRACE rather than a rebroadcast of individual trade prints. That distinction matters: it's the legally clean way to bring corporate bond transparency to a free page. The bond-by-bond layer — screening individual issues, checking a quote against recent institutional prints — is the paid tooling on our <a href="../index.html#pricing">roadmap</a>, built on properly licensed per-trade data.</p>
+    <p>If you're new to corporates, the one number to internalize from this page is volume concentration: a handful of mega-liquid bonds trade constantly while tens of thousands of issues barely trade at all. Liquidity is the corporate bond market's real currency, and the <a href="credit-spreads.html">credit spread</a> you're paid always includes compensation for how hard a bond is to sell.</p>
+
+    <p class="note">The week's corporate market story, every Sunday — <a href="../index.html#signup">the free Basispoint letter</a>.</p>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p class="disclaimer"><strong>Important:</strong> Basispoint provides market data and education for informational purposes only. Nothing on this page is investment advice or a recommendation. Aggregate statistics are derived from FINRA TRACE data; figures are end-of-day and may be delayed. Investing involves risk, including loss of principal.</p>
+    <div class="foot-row">
+      <span>© 2026 BASISPOINT · TORONTO</span>
+      <span>DATA: FINRA TRACE AGGREGATES (DERIVED)</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(async () => {
+  // Schema-tolerant renderer: FINRA's exact field names are confirmed at
+  // runtime, so this page renders whatever well-formed rows the pipeline
+  // stored rather than assuming a fixed schema.
+  const $ = id => document.getElementById(id);
+  const label = k => k.replace(/([a-z])([A-Z])/g, "$1 $2")
+                      .replace(/[_-]+/g, " ")
+                      .replace(/\b\w/g, c => c.toUpperCase());
+  const fmt = v => typeof v === "number"
+      ? v.toLocaleString("en-US", { maximumFractionDigits: 3 }) : String(v);
+  const isNum = v => typeof v === "number" || (!isNaN(parseFloat(v)) && isFinite(v));
+
+  let data = null;
+  try {
+    const r = await fetch("../data/corporates.json", { cache: "no-store" });
+    if (r.ok) data = await r.json();
+  } catch (e) { /* fall through */ }
+
+  if (!data || data.demo || (!data.breadth && !data.sentiment)) {
+    $("stamp").textContent = "Awaiting first data run";
+    $("pending").hidden = false;
+    return;
+  }
+
+  const date = data.breadth?.date || data.sentiment?.date || "";
+  $("stamp").textContent = `As of US close ${date} · Updated nightly · Source: FINRA TRACE`;
+
+  // ---- breadth: one card per row/segment, listing its numeric fields ----
+  const bRows = data.breadth?.rows || [];
+  if (bRows.length) {
+    $("breadthWrap").hidden = false;
+    const nameKey = Object.keys(bRows[0]).find(k =>
+      /segment|product|type|market|category/i.test(k) && !isNum(bRows[0][k]));
+    $("segGrid").innerHTML = bRows.map((row, i) => {
+      const title = nameKey ? String(row[nameKey]) : `Segment ${i + 1}`;
+      const items = Object.entries(row)
+        .filter(([k, v]) => k !== nameKey && !/date/i.test(k) && isNum(v))
+        .slice(0, 10)
+        .map(([k, v]) => `<dt>${label(k)}</dt><dd>${fmt(isNum(v) ? Number(v) : v)}</dd>`)
+        .join("");
+      return `<div class="seg"><h3>${title}</h3><dl>${items}</dl></div>`;
+    }).join("");
+  }
+
+  // ---- most active: generic table over the most useful columns ----
+  const sRows = data.sentiment?.rows || [];
+  if (sRows.length) {
+    $("activeWrap").hidden = false;
+    const keys = Object.keys(sRows[0]);
+    const preferred = keys.filter(k =>
+      /(issuer|issue|name|symbol|coupon|maturity|price|yield|change|volume|rating)/i.test(k)
+      && !/date/i.test(k));
+    const cols = (preferred.length ? preferred : keys.filter(k => !/date/i.test(k))).slice(0, 7);
+    document.querySelector("#activeTable thead").innerHTML =
+      "<tr>" + cols.map(k => `<th>${label(k)}</th>`).join("") + "</tr>";
+    document.querySelector("#activeTable tbody").innerHTML = sRows.map(r =>
+      "<tr>" + cols.map(k => `<td>${r[k] == null ? "—" : fmt(isNum(r[k]) ? Number(r[k]) : r[k])}</td>`).join("") + "</tr>"
+    ).join("");
+    $("activeNote").textContent = `${sRows.length} most active issues shown.`;
+  }
+})();
+</script>
+</body>
+</html>

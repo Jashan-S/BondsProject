@@ -20,6 +20,8 @@ PAGES = [
     ("/pages/yield-curve.html",    "daily",  "0.9", True),
     ("/pages/2s10s.html",          "daily",  "0.8", True),
     ("/pages/credit-spreads.html", "daily",  "0.8", True),
+    ("/pages/corporate-bonds.html","daily",  "0.8", True),
+    ("/pages/ladder-builder.html", "weekly", "0.9", False),
     ("/pages/learn/index.html",    "weekly", "0.7", False),
     ("/pages/learn/bond-ladders-vs-gics.html", "monthly", "0.7", False),
     ("/pages/learn/duration.html", "monthly", "0.7", False),
