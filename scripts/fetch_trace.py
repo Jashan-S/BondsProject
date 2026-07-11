@@ -64,8 +64,8 @@ def get_token():
         return None
 
 
-def fetch_dataset(name: str, token: str | None):
-    url = f"{API_BASE}/{name}?limit=100"
+def fetch_dataset(name: str, token: str | None, query: str = "limit=100"):
+    url = f"{API_BASE}/{name}?{query}"
     headers = {"Accept": "application/json",
                "User-Agent": "basispoint-data/0.2"}
     if token:
@@ -79,6 +79,30 @@ def fetch_dataset(name: str, token: str | None):
                 return data[key]
         return []
     return data if isinstance(data, list) else []
+
+
+def fetch_rows(name: str, token: str | None):
+    """Fetch rows newest-first.
+
+    The API may return records oldest-first, and datasets span years — so an
+    unsorted `limit=N` can silently deliver ancient data (this happened:
+    a 2024 date on a 2026 site). Two passes: sample a few rows to detect the
+    date field, then request the real page sorted descending on it. If the
+    sort parameter is rejected, fall back to unsorted and let latest_rows()
+    salvage what it can.
+    """
+    sample = fetch_dataset(name, token, "limit=5")
+    date_field = detect_date_field(sample)
+    if date_field:
+        try:
+            rows = fetch_dataset(name, token,
+                                 f"limit=100&sortFields=-{date_field}")
+            if rows:
+                return rows
+        except Exception as exc:  # noqa: BLE001
+            print(f"WARN {name}: sorted fetch failed ({exc}); "
+                  f"falling back to unsorted", file=sys.stderr)
+    return fetch_dataset(name, token)
 
 
 def detect_date_field(rows):
@@ -125,7 +149,7 @@ def main() -> int:
 
     for label, dataset in DATASETS.items():
         try:
-            rows = fetch_dataset(dataset, token)
+            rows = fetch_rows(dataset, token)
         except urllib.error.HTTPError as exc:
             print(f"WARN {dataset}: HTTP {exc.code} — "
                   f"{'check FINRA_API_CLIENT_ID/SECRET secrets' if exc.code in (401, 403) else 'see developer.finra.org'}",

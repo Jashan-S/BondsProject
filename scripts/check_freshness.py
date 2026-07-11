@@ -15,7 +15,9 @@ from datetime import date, timedelta
 from pathlib import Path
 
 MARKET = Path(__file__).resolve().parent.parent / "data" / "market.json"
+CORPORATES = Path(__file__).resolve().parent.parent / "data" / "corporates.json"
 MAX_BUSINESS_DAYS = 6  # tolerant of long weekends + holiday clusters
+MAX_CORP_BUSINESS_DAYS = 10  # corporates are best-effort: warn, don't fail
 
 
 def business_days_between(d0: date, d1: date) -> int:
@@ -61,6 +63,28 @@ def main() -> int:
         print("\nInvestigate the fetch logs above; a source has stopped "
               "updating or a series id changed.", file=sys.stderr)
         return 1
+
+    # Corporates: warn loudly in the log but never fail the run over them.
+    if CORPORATES.exists():
+        try:
+            corp = json.loads(CORPORATES.read_text())
+            if not corp.get("demo"):
+                d = (corp.get("breadth") or {}).get("date") \
+                    or (corp.get("sentiment") or {}).get("date")
+                if d:
+                    gap = business_days_between(date.fromisoformat(d[:10]), today)
+                    if gap > MAX_CORP_BUSINESS_DAYS:
+                        print(f"WARN corporates (TRACE): latest date {d} is "
+                              f"{gap} business days old — check fetch_trace "
+                              f"sort/auth", file=sys.stderr)
+                    else:
+                        print(f"OK corporates (TRACE): {d} ({gap} business days old)")
+                else:
+                    print("WARN corporates (TRACE): no date detected in rows",
+                          file=sys.stderr)
+        except (json.JSONDecodeError, ValueError) as exc:
+            print(f"WARN corporates (TRACE): unreadable ({exc})", file=sys.stderr)
+
     print("All sources fresh.")
     return 0
 
