@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bond Ladder Builder — Free Calculator with Live Yields | Basispoint</title>
+<meta name="description" content="Build a government bond ladder with live US Treasury or Government of Canada yields: allocation per rung, estimated income, average yield, duration, and a year-by-year cash flow schedule.">
+<meta property="og:title" content="Bond Ladder Builder — Free Calculator with Live Yields">
+<meta property="og:description" content="Design a Treasury or GoC ladder against today's actual curve: income, duration, and cash-flow schedule.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://bondtracker.ca/pages/ladder-builder.html">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Besley:wght@400;600;800&family=Public+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<style>
+  .controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:18px;background:#FBFBF8;border:1px solid var(--rule);border-radius:4px;padding:22px;margin:26px 0}
+  .ctl label{display:block;font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:7px}
+  .ctl input,.ctl select{width:100%;font-family:var(--mono);font-size:15px;padding:10px 12px;border:1px solid var(--rule);border-radius:3px;background:var(--paper);color:var(--ink)}
+  .ctl input:focus,.ctl select:focus{outline:2px solid var(--green);outline-offset:1px;border-color:var(--green)}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:18px;margin:26px 0}
+  .stat{background:var(--paper-deep);border:1px solid var(--rule);border-radius:4px;padding:16px 18px}
+  .stat .k{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft)}
+  .stat .v{font-family:var(--mono);font-size:26px;font-weight:500;color:var(--green);margin-top:5px}
+  .tbl-scroll{overflow-x:auto}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="logo" href="../index.html">Basispoint<small>FIXED INCOME, OPENED</small></a>
+    <nav class="nav-links">
+      <a href="yield-curve.html">Yield curves</a>
+      <a href="2s10s.html">2s10s</a>
+      <a href="credit-spreads.html">Credit spreads</a>
+      <a href="corporate-bonds.html">Corporates</a>
+      <a href="ladder-builder.html">Ladder tool</a>
+      <a href="learn/index.html">Learn</a>
+      <a href="../index.html#signup">Get the letter</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <p class="eyebrow">Free tool · Live government yields</p>
+    <h1>Bond ladder builder</h1>
+    <p class="lede">Design a government bond ladder against today's actual curve. Set the amount and structure; get allocation per rung, estimated income, average yield, duration, and a year-by-year cash-flow schedule.</p>
+    <p class="stamp" id="stamp">Loading today's curve…</p>
+
+    <div class="controls">
+      <div class="ctl">
+        <label for="amount">Total amount</label>
+        <input id="amount" type="number" min="1000" step="1000" value="50000">
+      </div>
+      <div class="ctl">
+        <label for="country">Curve</label>
+        <select id="country">
+          <option value="us">US Treasuries (USD)</option>
+          <option value="canada">Gov't of Canada (CAD)</option>
+        </select>
+      </div>
+      <div class="ctl">
+        <label for="rungs">Rungs</label>
+        <select id="rungs">
+          <option>3</option><option>4</option><option selected>5</option>
+          <option>6</option><option>7</option><option>8</option><option>10</option>
+        </select>
+      </div>
+      <div class="ctl">
+        <label for="spacing">Spacing</label>
+        <select id="spacing">
+          <option value="0.5">Every 6 months</option>
+          <option value="1" selected>Every year</option>
+          <option value="2">Every 2 years</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><div class="k">Avg yield</div><div class="v" id="sYield">—</div></div>
+      <div class="stat"><div class="k">Est. annual income</div><div class="v" id="sIncome">—</div></div>
+      <div class="stat"><div class="k">Ladder duration</div><div class="v" id="sDur">—</div></div>
+      <div class="stat"><div class="k">Final maturity</div><div class="v" id="sMat">—</div></div>
+    </div>
+
+    <div class="tbl-scroll">
+      <table id="rungTable">
+        <caption>The rungs</caption>
+        <thead><tr><th>Rung</th><th>Matures in</th><th>Allocation</th><th>Est. yield</th><th>Est. income / yr</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div class="tbl-scroll">
+      <table id="flowTable">
+        <caption>Year-by-year cash flow</caption>
+        <thead><tr><th>Year</th><th>Coupon income</th><th>Principal returned</th><th>Total cash</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <p class="note">When a rung matures, the classic move is reinvesting the principal at the ladder's far end — keeping the structure rolling at whatever rates then prevail. Reinvestment modeling and saved ladders are coming in the full toolkit.</p>
+
+    <h2>How the estimates work</h2>
+    <p>Yields per rung are interpolated from today's benchmark government curve (the same data on our <a href="yield-curve.html">yield-curve page</a>, refreshed nightly). Estimates assume bonds bought near par, so income ≈ allocation × yield; real purchases will differ — bonds trade above or below par, and the exact issue you buy won't sit precisely on the benchmark curve. Duration per rung uses the standard par-bond approximation, and the ladder's <a href="learn/duration.html">duration</a> is the allocation-weighted average. Treat everything here as a well-informed sketch for comparing structures, not a quote.</p>
+
+    <p class="note">Rate moves that change this math, weekly — <a href="../index.html#signup">the free Basispoint letter</a>.</p>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p class="disclaimer"><strong>Important:</strong> This calculator is general education using benchmark yields, not investment advice, a quote, or an offer. Actual bond prices, yields, and availability vary. Consult a registered advisor about your situation. Investing involves risk, including loss of principal.</p>
+    <div class="foot-row">
+      <span>© 2026 BASISPOINT · TORONTO</span>
+      <span>YIELDS: FRED H.15 · BANK OF CANADA</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(async () => {
+  const $ = id => document.getElementById(id);
+  const CCY = { us: "USD", canada: "CAD" };
+  const money = (v, ccy) => v.toLocaleString("en-CA",
+    { style: "currency", currency: ccy, maximumFractionDigits: 0 });
+
+  // Fallback curves keep the tool usable if the fetch fails
+  let curves = {
+    us: [{years:0.25,yield:4.93},{years:2,yield:4.21},{years:5,yield:4.38},{years:10,yield:4.62},{years:30,yield:4.97}],
+    canada: [{years:0.25,yield:3.02},{years:2,yield:2.91},{years:5,yield:3.11},{years:10,yield:3.49},{years:30,yield:3.9}]
+  };
+  let stampText = "Benchmark sample curve";
+  try {
+    const r = await fetch("../data/market.json", { cache: "no-store" });
+    if (r.ok) {
+      const m = await r.json();
+      for (const key of ["us", "canada"]) {
+        const c = (m[key]?.curve || []).filter(p => p.years != null && p.yield != null)
+                                       .sort((a, b) => a.years - b.years);
+        if (c.length >= 3) curves[key] = c;
+      }
+      if (!m.demo) stampText = `Built on closes: US ${m.us?.date || "—"} · Canada ${m.canada?.date || "—"}`;
+    }
+  } catch (e) { /* fallback stays */ }
+  $("stamp").textContent = stampText;
+
+  const interp = (c, t) => {
+    if (t <= c[0].years) return c[0].yield;
+    if (t >= c[c.length - 1].years) return c[c.length - 1].yield;
+    for (let i = 0; i < c.length - 1; i++) {
+      const a = c[i], b = c[i + 1];
+      if (t >= a.years && t <= b.years)
+        return a.yield + (b.yield - a.yield) * (t - a.years) / (b.years - a.years);
+    }
+    return c[c.length - 1].yield;
+  };
+  const modDuration = (y, T) => { const r = y / 100; return r < 1e-6 ? T : (1 - Math.pow(1 + r, -T)) / r; };
+  const fmtTerm = t => t < 1 ? `${Math.round(t * 12)} mo` : (Number.isInteger(t) ? `${t} yr` : `${t} yr`);
+
+  function build() {
+    const amount = Math.max(1000, Number($("amount").value) || 0);
+    const country = $("country").value;
+    const n = Number($("rungs").value);
+    const step = Number($("spacing").value);
+    const ccy = CCY[country];
+    const curve = curves[country];
+    const alloc = amount / n;
+
+    const rungs = [];
+    for (let i = 1; i <= n; i++) {
+      const T = i * step;
+      const y = interp(curve, T);
+      rungs.push({ T, y, alloc, income: alloc * y / 100, dur: modDuration(y, T) });
+    }
+
+    const income = rungs.reduce((s, r) => s + r.income, 0);
+    const avgY = rungs.reduce((s, r) => s + r.y, 0) / n;
+    const dur = rungs.reduce((s, r) => s + r.dur, 0) / n;
+
+    $("sYield").textContent = avgY.toFixed(2) + "%";
+    $("sIncome").textContent = money(income, ccy);
+    $("sDur").textContent = dur.toFixed(1) + " yr";
+    $("sMat").textContent = fmtTerm(rungs[n - 1].T);
+
+    document.querySelector("#rungTable tbody").innerHTML = rungs.map((r, i) =>
+      `<tr><td>${i + 1}</td><td>${fmtTerm(r.T)}</td><td>${money(r.alloc, ccy)}</td>` +
+      `<td>${r.y.toFixed(2)}%</td><td>${money(r.income, ccy)}</td></tr>`).join("");
+
+    // Cash-flow schedule on whole-year buckets
+    const lastYear = Math.ceil(rungs[n - 1].T);
+    let rows = "";
+    for (let yr = 1; yr <= lastYear; yr++) {
+      const coupons = rungs.filter(r => r.T > yr - 1).reduce((s, r) => s + r.income, 0);
+      const principal = rungs.filter(r => r.T > yr - 1 && r.T <= yr).reduce((s, r) => s + r.alloc, 0);
+      rows += `<tr><td>${yr}</td><td>${money(coupons, ccy)}</td>` +
+              `<td>${principal ? money(principal, ccy) : "—"}</td>` +
+              `<td>${money(coupons + principal, ccy)}</td></tr>`;
+    }
+    document.querySelector("#flowTable tbody").innerHTML = rows;
+  }
+
+  ["amount", "country", "rungs", "spacing"].forEach(id =>
+    $(id).addEventListener("input", build));
+  build();
+})();
+</script>
+</body>
+</html>
