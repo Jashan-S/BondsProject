@@ -1,23 +1,23 @@
 {
-  "updated": "2026-09-22T01:03:22+00:00",
+  "updated": "2026-09-23T00:52:04+00:00",
   "demo": false,
   "us": {
-    "date": "2026-09-18",
+    "date": "2026-09-21",
     "curve": [
       {
         "tenor": "3M",
         "years": 0.25,
-        "yield": 4.14
+        "yield": 4.17
       },
       {
         "tenor": "6M",
         "years": 0.5,
-        "yield": 4.24
+        "yield": 4.27
       },
       {
         "tenor": "1Y",
         "years": 1,
-        "yield": 4.44
+        "yield": 4.45
       },
       {
         "tenor": "2Y",
@@ -27,68 +27,68 @@
       {
         "tenor": "5Y",
         "years": 5,
-        "yield": 4.86
+        "yield": 4.83
       },
       {
         "tenor": "7Y",
         "years": 7,
-        "yield": 4.93
+        "yield": 4.89
       },
       {
         "tenor": "10Y",
         "years": 10,
-        "yield": 5.01
+        "yield": 4.96
       },
       {
         "tenor": "20Y",
         "years": 20,
-        "yield": 5.38
+        "yield": 5.33
       },
       {
         "tenor": "30Y",
         "years": 30,
-        "yield": 5.34
+        "yield": 5.29
       }
     ]
   },
   "canada": {
-    "date": "2026-09-18",
+    "date": "2026-09-21",
     "curve": [
       {
         "tenor": "2Y",
         "years": 2,
-        "yield": 3.32
+        "yield": 3.29
       },
       {
         "tenor": "3Y",
         "years": 3,
-        "yield": 3.41
+        "yield": 3.37
       },
       {
         "tenor": "5Y",
         "years": 5,
-        "yield": 3.59
+        "yield": 3.57
       },
       {
         "tenor": "7Y",
         "years": 7,
-        "yield": 3.68
+        "yield": 3.64
       },
       {
         "tenor": "10Y",
         "years": 10,
-        "yield": 3.87
+        "yield": 3.84
       },
       {
         "tenor": "30Y",
         "years": 30,
-        "yield": 4.19
+        "yield": 4.16
       }
     ]
   },
   "spreads": {
-    "us_2s10s_bp": 25,
+    "us_2s10s_bp": 20,
     "ig_oas_bp": 77,
-    "hy_oas_bp": 268
+    "hy_oas_bp": 266
   }
 }
