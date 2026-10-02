@@ -1,58 +1,58 @@
 {
-  "updated": "2026-10-01T01:26:50+00:00",
+  "updated": "2026-10-02T01:46:39+00:00",
   "demo": false,
   "us": {
-    "date": "2026-09-29",
+    "date": "2026-09-30",
     "curve": [
       {
         "tenor": "3M",
         "years": 0.25,
-        "yield": 4.25
+        "yield": 4.2
       },
       {
         "tenor": "6M",
         "years": 0.5,
-        "yield": 4.36
+        "yield": 4.33
       },
       {
         "tenor": "1Y",
         "years": 1,
-        "yield": 4.58
+        "yield": 4.54
       },
       {
         "tenor": "2Y",
         "years": 2,
-        "yield": 4.89
+        "yield": 4.88
       },
       {
         "tenor": "5Y",
         "years": 5,
-        "yield": 5.06
+        "yield": 5.09
       },
       {
         "tenor": "7Y",
         "years": 7,
-        "yield": 5.16
+        "yield": 5.19
       },
       {
         "tenor": "10Y",
         "years": 10,
-        "yield": 5.26
+        "yield": 5.29
       },
       {
         "tenor": "20Y",
         "years": 20,
-        "yield": 5.64
+        "yield": 5.68
       },
       {
         "tenor": "30Y",
         "years": 30,
-        "yield": 5.59
+        "yield": 5.64
       }
     ]
   },
   "canada": {
-    "date": "2026-09-28",
+    "date": "2026-09-29",
     "curve": [
       {
         "tenor": "2Y",
@@ -62,33 +62,33 @@
       {
         "tenor": "3Y",
         "years": 3,
-        "yield": 3.46
+        "yield": 3.47
       },
       {
         "tenor": "5Y",
         "years": 5,
-        "yield": 3.68
+        "yield": 3.69
       },
       {
         "tenor": "7Y",
         "years": 7,
-        "yield": 3.75
+        "yield": 3.77
       },
       {
         "tenor": "10Y",
         "years": 10,
-        "yield": 3.96
+        "yield": 3.99
       },
       {
         "tenor": "30Y",
         "years": 30,
-        "yield": 4.25
+        "yield": 4.3
       }
     ]
   },
   "spreads": {
-    "us_2s10s_bp": 37,
+    "us_2s10s_bp": 41,
     "ig_oas_bp": 84,
-    "hy_oas_bp": 308
+    "hy_oas_bp": 312
   }
 }
