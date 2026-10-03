@@ -1,94 +1,94 @@
 {
-  "updated": "2026-10-02T01:46:39+00:00",
+  "updated": "2026-10-03T01:20:35+00:00",
   "demo": false,
   "us": {
-    "date": "2026-09-30",
+    "date": "2026-10-01",
     "curve": [
       {
         "tenor": "3M",
         "years": 0.25,
-        "yield": 4.2
+        "yield": 4.17
       },
       {
         "tenor": "6M",
         "years": 0.5,
-        "yield": 4.33
+        "yield": 4.27
       },
       {
         "tenor": "1Y",
         "years": 1,
-        "yield": 4.54
+        "yield": 4.44
       },
       {
         "tenor": "2Y",
         "years": 2,
-        "yield": 4.88
+        "yield": 4.78
       },
       {
         "tenor": "5Y",
         "years": 5,
-        "yield": 5.09
+        "yield": 5.01
       },
       {
         "tenor": "7Y",
         "years": 7,
-        "yield": 5.19
+        "yield": 5.12
       },
       {
         "tenor": "10Y",
         "years": 10,
-        "yield": 5.29
+        "yield": 5.24
       },
       {
         "tenor": "20Y",
         "years": 20,
-        "yield": 5.68
+        "yield": 5.64
       },
       {
         "tenor": "30Y",
         "years": 30,
-        "yield": 5.64
+        "yield": 5.61
       }
     ]
   },
   "canada": {
-    "date": "2026-09-29",
+    "date": "2026-10-01",
     "curve": [
       {
         "tenor": "2Y",
         "years": 2,
-        "yield": 3.37
+        "yield": 3.27
       },
       {
         "tenor": "3Y",
         "years": 3,
-        "yield": 3.47
+        "yield": 3.37
       },
       {
         "tenor": "5Y",
         "years": 5,
-        "yield": 3.69
+        "yield": 3.62
       },
       {
         "tenor": "7Y",
         "years": 7,
-        "yield": 3.77
+        "yield": 3.7
       },
       {
         "tenor": "10Y",
         "years": 10,
-        "yield": 3.99
+        "yield": 3.94
       },
       {
         "tenor": "30Y",
         "years": 30,
-        "yield": 4.3
+        "yield": 4.28
       }
     ]
   },
   "spreads": {
-    "us_2s10s_bp": 41,
-    "ig_oas_bp": 84,
-    "hy_oas_bp": 312
+    "us_2s10s_bp": 46,
+    "ig_oas_bp": 86,
+    "hy_oas_bp": 324
   }
 }
