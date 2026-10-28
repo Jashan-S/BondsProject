@@ -1,8 +1,8 @@
 {
-  "updated": "2026-10-27T01:35:15+00:00",
+  "updated": "2026-10-28T01:34:37+00:00",
   "demo": false,
   "us": {
-    "date": "2026-10-23",
+    "date": "2026-10-26",
     "curve": [
       {
         "tenor": "3M",
@@ -12,27 +12,27 @@
       {
         "tenor": "6M",
         "years": 0.5,
-        "yield": 4.3
+        "yield": 4.35
       },
       {
         "tenor": "1Y",
         "years": 1,
-        "yield": 4.44
+        "yield": 4.47
       },
       {
         "tenor": "2Y",
         "years": 2,
-        "yield": 4.69
+        "yield": 4.68
       },
       {
         "tenor": "5Y",
         "years": 5,
-        "yield": 4.82
+        "yield": 4.84
       },
       {
         "tenor": "7Y",
         "years": 7,
-        "yield": 4.89
+        "yield": 4.91
       },
       {
         "tenor": "10Y",
@@ -42,32 +42,32 @@
       {
         "tenor": "20Y",
         "years": 20,
-        "yield": 5.37
+        "yield": 5.35
       },
       {
         "tenor": "30Y",
         "years": 30,
-        "yield": 5.33
+        "yield": 5.31
       }
     ]
   },
   "canada": {
-    "date": "2026-10-23",
+    "date": "2026-10-26",
     "curve": [
       {
         "tenor": "2Y",
         "years": 2,
-        "yield": 3.33
+        "yield": 3.37
       },
       {
         "tenor": "3Y",
         "years": 3,
-        "yield": 3.44
+        "yield": 3.47
       },
       {
         "tenor": "5Y",
         "years": 5,
-        "yield": 3.56
+        "yield": 3.58
       },
       {
         "tenor": "7Y",
@@ -77,18 +77,18 @@
       {
         "tenor": "10Y",
         "years": 10,
-        "yield": 3.83
+        "yield": 3.84
       },
       {
         "tenor": "30Y",
         "years": 30,
-        "yield": 4.12
+        "yield": 4.13
       }
     ]
   },
   "spreads": {
-    "us_2s10s_bp": 31,
-    "ig_oas_bp": 91,
-    "hy_oas_bp": 338
+    "us_2s10s_bp": 32,
+    "ig_oas_bp": 90,
+    "hy_oas_bp": 330
   }
 }
