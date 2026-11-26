@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bond Market Brief — What Moved in US &amp; Canadian Rates | Basispoint</title>
+<meta name="description" content="A daily, data-driven brief on US Treasury and Government of Canada yields: what moved, how the curve changed, where 2-year yields sit against each central bank's policy rate, and what drove the 10-year.">
+<meta property="og:title" content="Bond Market Brief — What Moved in US &amp; Canadian Rates">
+<meta property="og:description" content="What moved, the curve, policy rates versus the market, and the next central bank decisions. Updated every market day.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://bondtracker.ca/pages/market-brief.html">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Besley:wght@400;600;800&family=Public+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<style>
+  .obs{list-style:none;margin:20px 0 8px;padding:0;max-width:72ch}
+  .obs li{padding:12px 0 12px 22px;border-top:1px solid var(--rule);position:relative;font-size:16.5px}
+  .obs li:last-child{border-bottom:1px solid var(--rule)}
+  .obs li::before{content:"";position:absolute;left:2px;top:21px;width:8px;height:8px;background:var(--green);border-radius:1px}
+  .tbl-scroll{overflow-x:auto}
+  .tbl-scroll table{max-width:none;min-width:520px}
+  td.up{color:var(--green)} td.down{color:var(--seal)}
+  .chart-wide{max-width:640px}
+  .cal{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin:18px 0}
+  .cal div{background:#FBFBF8;border:1px solid var(--rule);border-radius:4px;padding:16px 18px}
+  .cal .k{font-family:var(--mono);font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--green)}
+  .cal .d{font-family:var(--display);font-weight:600;font-size:20px;margin-top:6px}
+  .cal .n{font-family:var(--mono);font-size:12.5px;color:var(--ink-soft);margin-top:2px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="logo" href="../index.html">Basispoint<small>FIXED INCOME, OPENED</small></a>
+    <nav class="nav-links">
+      <a href="market-brief.html">Market brief</a>
+      <a href="yield-curve.html">Yield curves</a>
+      <a href="2s10s.html">2s10s</a>
+      <a href="corporate-bonds.html">Corporates</a>
+      <a href="ladder-builder.html">Ladder tool</a>
+      <a href="learn/index.html">Learn</a>
+      <a href="../index.html#signup">Get the letter</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <p class="eyebrow">Market brief · Updated every market day</p>
+    <h1>What moved in US and Canadian rates</h1>
+    <p class="lede">Every statement on this page is computed from official yield and policy-rate data after each close. It describes what happened; it does not forecast or recommend.</p>
+    <p class="stamp" id="stamp">Loading latest data…</p>
+
+    <h2>This week in rates</h2>
+    <ul class="obs" id="obs"><li>Loading…</li></ul>
+
+    <h2>Moves by maturity</h2>
+    <p>Change in yield, in basis points (one basis point is 0.01%). Green is a rise in yield, which means a fall in bond prices.</p>
+    <div class="tbl-scroll"><table id="movesTable"><thead></thead><tbody></tbody></table></div>
+
+    <h2>Policy rates against the market</h2>
+    <p>The 2-year yield is roughly the market's average expected policy rate over the next two years. When it sits well above the central bank's rate, markets expect rates to go up on average; well below, they expect cuts.</p>
+    <div class="tbl-scroll"><table id="policyTable"><thead><tr><th></th><th>Policy rate</th><th>2-year yield</th><th>Gap</th><th>Last change</th></tr></thead><tbody></tbody></table></div>
+    <figure class="chart-card chart-wide">
+      <span class="tag">US 2-YEAR MINUS FED FUNDS MIDPOINT</span>
+      <div id="gapChart"></div>
+      <figcaption><span id="gapCap">DAILY</span><span>FEDERAL RESERVE VIA FRED</span></figcaption>
+    </figure>
+
+    <h2>Curve shape</h2>
+    <p>Each slope is the longer yield minus the shorter one. A falling slope is a flattening curve; below zero the curve is inverted.</p>
+    <div class="tbl-scroll"><table id="slopeTable"><thead></thead><tbody></tbody></table></div>
+
+    <h2>What drove the US 10-year</h2>
+    <p>The 10-year yield is roughly the 10-year real yield (from inflation-protected Treasuries) plus breakeven inflation, the inflation rate the market is pricing in. Splitting a move between them shows whether investors are demanding more real return or expecting more inflation.</p>
+    <p class="note" id="levelsNote"></p>
+    <div class="tbl-scroll"><table id="decompTable"><thead><tr><th>Period</th><th>10-year yield</th><th>Real yield</th><th>Breakeven inflation</th></tr></thead><tbody></tbody></table></div>
+
+    <h2>US against Canada</h2>
+    <div class="tbl-scroll"><table id="xbTable"><thead></thead><tbody></tbody></table></div>
+    <figure class="chart-card chart-wide">
+      <span class="tag">US MINUS CANADA, 10-YEAR</span>
+      <div id="xbChart"></div>
+      <figcaption><span id="xbCap">DAILY</span><span>FRED · BANK OF CANADA</span></figcaption>
+    </figure>
+
+    <h2>Next central bank decisions</h2>
+    <div class="cal" id="cal"></div>
+    <p class="note">Scheduled announcement dates from the Federal Reserve and the Bank of Canada.</p>
+
+    <p class="note">Want this in your inbox with context? <a href="../index.html#signup">Get the free weekly letter</a>.</p>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p class="disclaimer"><strong>Important:</strong> Basispoint provides market data and education for informational purposes only. Nothing on this page is investment advice, a forecast or a recommendation. Figures are end-of-day and may be delayed. Investing involves risk, including loss of principal.</p>
+    <p class="disclaimer">This product uses the FRED® API but is not endorsed or certified by the Federal Reserve Bank of St. Louis. <a href="terms.html">Terms</a> · <a href="privacy.html">Privacy</a> · <a href="https://fred.stlouisfed.org/docs/api/terms_of_use.html" rel="noopener">FRED API terms</a></p>
+    <div class="foot-row">
+      <span>© 2026 BASISPOINT · TORONTO</span>
+      <span>DATA: FEDERAL RESERVE H.15 AND FRED · BANK OF CANADA</span>
+    </div>
+  </div>
+</footer>
+
+<script src="../assets/charts.js"></script>
+<script>
+(async () => {
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const getJSON = async p => { try { const r = await fetch(p, { cache: "no-store" }); return r.ok ? r.json() : null; } catch (e) { return null; } };
+  const bp = v => v == null ? "—" : (v > 0 ? "+" : "") + v + "bp";
+  const cls = v => v == null || v === 0 ? "" : v > 0 ? "up" : "down";
+  const cell = v => `<td class="${cls(v)}">${bp(v)}</td>`;
+  const pct = v => v == null ? "—" : Number(v).toFixed(2) + "%";
+
+  const b = await getJSON("../data/brief.json");
+  if (!b) {
+    $("stamp").textContent = "The brief is built after the next market close.";
+    $("obs").innerHTML = "<li>No brief yet. It appears automatically after the next nightly data run.</li>";
+    return;
+  }
+  $("stamp").textContent = `US close ${b.asof.us || "—"} · Canada close ${b.asof.canada || "—"} · History from ${b.history_from.us}`;
+  $("obs").innerHTML = (b.observations || []).map(o => `<li>${esc(o)}</li>`).join("") || "<li>Nothing notable to report.</li>";
+
+  // Moves
+  const W = ["1d", "1w", "1m", "3m", "1y"];
+  const WL = { "1d": "1 day", "1w": "1 week", "1m": "1 month", "3m": "3 months", "1y": "1 year" };
+  document.querySelector("#movesTable thead").innerHTML =
+    "<tr><th>Maturity</th><th>Yield</th>" + W.map(w => `<th>${WL[w]}</th>`).join("") + "</tr>";
+  let rows = "";
+  for (const [key, label] of [["us", "US"], ["canada", "Canada"]]) {
+    for (const [t, m] of Object.entries(b[key]?.moves || {})) {
+      rows += `<tr><td>${label} ${t}</td><td>${pct(m.level)}</td>${W.map(w => cell(m[w])).join("")}</tr>`;
+    }
+  }
+  document.querySelector("#movesTable tbody").innerHTML = rows;
+
+  // Policy
+  const p = b.policy || {};
+  const last = k => p[k] ? `${p[k].date}: ${pct(p[k].from)} → ${pct(p[k].to)}` : "—";
+  const usTwo = b.us?.moves?.["2Y"]?.level, caTwo = b.canada?.moves?.["2Y"]?.level;
+  let prow = "";
+  if (p.fed_range) prow += `<tr><td>US (Fed funds target)</td><td>${pct(p.fed_range[0])} – ${pct(p.fed_range[1])}</td><td>${pct(usTwo)}</td>${cell(p.us_2y_minus_policy_bp)}<td>${esc(last("fed_upper_last_change"))}</td></tr>`;
+  if (p.boc_target != null) prow += `<tr><td>Canada (overnight target)</td><td>${pct(p.boc_target)}</td><td>${pct(caTwo)}</td>${cell(p.canada_2y_minus_policy_bp)}<td>${esc(last("boc_target_last_change"))}</td></tr>`;
+  document.querySelector("#policyTable tbody").innerHTML = prow ||
+    `<tr><td colspan="5">Policy rates appear after the next nightly data run.</td></tr>`;
+
+  // Slopes
+  document.querySelector("#slopeTable thead").innerHTML =
+    "<tr><th>Slope</th><th>Now</th><th>1 week</th><th>1 month</th><th>3 months</th><th>1 year</th></tr>";
+  let srows = "";
+  const SL = { "2s10s": "2s10s (10Y − 2Y)", "5s30s": "5s30s (30Y − 5Y)", "3m10y": "3m10y (10Y − 3M)" };
+  for (const [key, label] of [["us", "US"], ["canada", "Canada"]]) {
+    for (const [s, m] of Object.entries(b[key]?.slopes || {})) {
+      srows += `<tr><td>${label} ${SL[s] || s}</td><td>${bp(m.level)}</td>${["1w", "1m", "3m", "1y"].map(w => cell(m[w])).join("")}</tr>`;
+    }
+  }
+  document.querySelector("#slopeTable tbody").innerHTML = srows;
+
+  // Decomposition
+  const L = b.levels || {};
+  $("levelsNote").textContent = L.us_real_10y != null
+    ? `Today: 10-year real yield ${pct(L.us_real_10y)}, 10-year breakeven inflation ${pct(L.us_breakeven_10y)}.`
+    : "Real yield and breakeven data appear after the next nightly data run.";
+  const D = b.decomposition || {};
+  document.querySelector("#decompTable tbody").innerHTML = ["1w", "1m", "3m"].filter(k => D[k]).map(k =>
+    `<tr><td>${WL[k]} (from ${D[k].from})</td>${cell(D[k].nominal)}${cell(D[k].real)}${cell(D[k].breakeven)}</tr>`).join("") ||
+    `<tr><td colspan="4">Appears after the next nightly data run.</td></tr>`;
+
+  // Cross-border
+  document.querySelector("#xbTable thead").innerHTML =
+    "<tr><th>US minus Canada</th><th>Now</th><th>1 week</th><th>1 month</th><th>3 months</th><th>1 year</th></tr>";
+  document.querySelector("#xbTable tbody").innerHTML = Object.entries(b.cross_border || {}).map(([t, m]) =>
+    `<tr><td>${t} yield gap</td><td>${bp(m.level)}</td>${["1w", "1m", "3m", "1y"].map(w => cell(m[w])).join("")}</tr>`).join("");
+
+  // Calendar
+  $("cal").innerHTML = (b.calendar || []).slice(0, 4).map(e =>
+    `<div><div class="k">${esc(e.bank)}</div><div class="d">${esc(e.date_label)}</div><div class="n">${e.days_away === 0 ? "Today" : "In " + e.days_away + " days"}</div></div>`).join("") ||
+    "<p class='note'>No scheduled dates on file.</p>";
+
+  // Charts from history
+  const [us, ca, macro] = await Promise.all([
+    bpLoadHistory("../data/history/", "us-curve"),
+    bpLoadHistory("../data/history/", "ca-curve"),
+    bpLoadHistory("../data/history/", "macro"),
+  ]);
+  const usBy = Object.fromEntries(us.days.map(d => [d.date, d]));
+  const gap = macro.days
+    .filter(d => d.fed_upper != null && d.fed_lower != null && usBy[d.date]?.yields?.["2Y"] != null)
+    .map(d => ({ date: d.date, value: Math.round((usBy[d.date].yields["2Y"] - (d.fed_upper + d.fed_lower) / 2) * 100) }));
+  bpLineChart($("gapChart"), gap, { label: "US 2-year yield minus Fed funds target midpoint", unit: "bp", minPad: 5 });
+  if (gap.length) $("gapCap").textContent = `${gap.length} DAILY CLOSES`;
+  const caBy = Object.fromEntries(ca.days.map(d => [d.date, d]));
+  const xb = us.days
+    .filter(d => d.yields?.["10Y"] != null && caBy[d.date]?.yields?.["10Y"] != null)
+    .map(d => ({ date: d.date, value: Math.round((d.yields["10Y"] - caBy[d.date].yields["10Y"]) * 100) }));
+  bpLineChart($("xbChart"), xb, { label: "US minus Canada 10-year yield", unit: "bp", minPad: 5 });
+  if (xb.length) $("xbCap").textContent = `${xb.length} DAILY CLOSES`;
+})();
+</script>
+<script src="../assets/config.js"></script>
+<script src="../assets/site.js"></script>
+</body>
+</html>

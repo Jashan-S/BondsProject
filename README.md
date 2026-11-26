@@ -14,6 +14,8 @@ usually starts it a few hours late) and commits fresh files under `data/`:
 | Government yields | `scripts/fetch_data.py` | `data/market.json` |
 | Daily history | `scripts/fetch_history.py` | `data/history/*-<year>.json` |
 | FINRA corporate statistics | `scripts/fetch_trace.py` | `data/corporates.json` |
+| History backfill (one-time, to Jan 2024) | `scripts/backfill_history.py` | `data/history/*` |
+| Market brief | `scripts/build_brief.py` | `data/brief.json` |
 | Sitemap | `scripts/build_sitemap.py` | `sitemap.xml` |
 | Staleness check | `scripts/check_freshness.py` | fails the run if data is old |
 
@@ -47,6 +49,7 @@ off.
 
 ```
 index.html                      Home, pricing, email form
+pages/market-brief.html         Daily brief: moves, policy vs market, real vs inflation
 pages/yield-curve.html          US and Canada curves, daily changes, 10Y history
 pages/2s10s.html                2s10s spread with history
 pages/credit-spreads.html       Explainer; links to FRED for index levels
@@ -62,3 +65,9 @@ assets/config.js, site.js       Settings and the code that applies them
 To add a page: put it in `pages/`, load `assets/style.css`, end the body with
 the two `config.js` / `site.js` script tags, and add it to the list in
 `scripts/build_sitemap.py`.
+
+## The central-bank calendar
+
+`assets/calendar.json` lists scheduled Fed and Bank of Canada decision dates
+and is the one data file kept by hand. Add the 2028 dates when the banks
+publish them; the market brief shows the next ones automatically.

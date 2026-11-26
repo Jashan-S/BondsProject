@@ -17,6 +17,7 @@ BASE_URL = "https://bondtracker.ca"
 # (path, changefreq, priority, data_driven)
 PAGES = [
     ("/",                          "weekly", "1.0", True),
+    ("/pages/market-brief.html",   "daily",  "0.9", True),
     ("/pages/yield-curve.html",    "daily",  "0.9", True),
     ("/pages/2s10s.html",          "daily",  "0.8", True),
     ("/pages/credit-spreads.html", "monthly", "0.6", False),

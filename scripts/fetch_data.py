@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """
 Fetch US Treasury yields (FRED) and Government of Canada yields (Bank of
-Canada Valet), plus credit spreads, and write them to data/market.json.
+Canada Valet), plus policy rates and US real yields and inflation
+breakevens, and write them to data/market.json.
 
 Runs nightly via GitHub Actions. Requires env var FRED_API_KEY
 (free key: https://fred.stlouisfed.org/docs/api/api_key.html).
@@ -57,6 +58,19 @@ BOC_TENORS = [
     ("10Y", "BD.CDN.10YR.DQ.YLD", 10),
     ("30Y", "BD.CDN.LONG.DQ.YLD", 30),
 ]
+
+# Policy rates and the split of the US 10-year into real yield and expected
+# inflation. All four are published by the Federal Reserve or the Bank of
+# Canada, not by a third-party index provider.
+FRED_MACRO = {
+    "fed_upper": "DFEDTARU",   # Fed funds target range, upper bound
+    "fed_lower": "DFEDTARL",   # Fed funds target range, lower bound
+    "us_real_10y": "DFII10",   # 10-year TIPS yield (real yield)
+    "us_breakeven_10y": "T10YIE",  # 10-year breakeven inflation
+}
+BOC_MACRO = {
+    "boc_target": "V39079",    # Target for the overnight rate
+}
 
 OUT_PATH = Path(__file__).resolve().parent.parent / "data" / "market.json"
 
@@ -140,6 +154,22 @@ def main() -> int:
         except Exception as exc:  # noqa: BLE001
             print(f"WARN FRED {series_id}: {exc}", file=sys.stderr)
 
+    macro = {}
+    for key, series_id in FRED_MACRO.items():
+        try:
+            value, date = fred_latest(series_id)
+            if value is not None:
+                macro[key] = {"value": round(value, 2), "date": date}
+        except Exception as exc:  # noqa: BLE001
+            print(f"WARN FRED {series_id}: {exc}", file=sys.stderr)
+    for key, series_id in BOC_MACRO.items():
+        try:
+            value, date = boc_latest(series_id)
+            if value is not None:
+                macro[key] = {"value": round(value, 2), "date": date}
+        except Exception as exc:  # noqa: BLE001
+            print(f"WARN BoC {series_id}: {exc}", file=sys.stderr)
+
     if len(us_curve) < 4:
         print("ERROR: US curve too sparse, refusing to overwrite data", file=sys.stderr)
         return 1
@@ -150,12 +180,14 @@ def main() -> int:
         "us": {"date": us_date, "curve": us_curve},
         "canada": {"date": ca_date, "curve": ca_curve},
         "spreads": spreads,
+        "macro": macro,
     }
 
     OUT_PATH.parent.mkdir(parents=True, exist_ok=True)
     OUT_PATH.write_text(json.dumps(payload, indent=2) + "\n")
     print(f"Wrote {OUT_PATH} — US {len(us_curve)} pts ({us_date}), "
-          f"CA {len(ca_curve)} pts ({ca_date}), spreads: {spreads}")
+          f"CA {len(ca_curve)} pts ({ca_date}), spreads: {spreads}, "
+          f"macro: {sorted(macro)}")
     return 0
 
 

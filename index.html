@@ -137,6 +137,10 @@
     .spread{grid-template-columns:1fr}
     .nav-links{display:none}
   }
+  .brief-list{list-style:none;padding:0;margin:18px 0 18px;max-width:72ch}
+  .brief-list li{padding:11px 0 11px 22px;border-top:1px solid var(--rule);position:relative}
+  .brief-list li:last-child{border-bottom:1px solid var(--rule)}
+  .brief-list li::before{content:"";position:absolute;left:2px;top:20px;width:8px;height:8px;background:var(--green);border-radius:1px}
 </style>
 </head>
 <body>
@@ -149,6 +153,7 @@
   <div class="wrap nav">
     <a class="logo" href="#">Basispoint<small>FIXED INCOME, OPENED</small></a>
     <nav class="nav-links">
+      <a href="pages/market-brief.html">Market brief</a>
       <a href="pages/yield-curve.html">Yield curves</a>
       <a href="pages/corporate-bonds.html">Corporates</a>
       <a href="pages/ladder-builder.html">Ladder tool</a>
@@ -206,6 +211,15 @@
       <figcaption><span id="cap1">US TREASURY CURVE · SAMPLE</span><span id="cap2">SOURCE: FRED H.15</span></figcaption>
     </figure>
   </div>
+
+  <section id="brief" hidden>
+    <div class="wrap">
+      <p class="eyebrow" id="briefStamp">This week in rates</p>
+      <h2>What moved in rates</h2>
+      <ul class="brief-list" id="briefList"></ul>
+      <p><a href="pages/market-brief.html">Read the full market brief &rarr;</a></p>
+    </div>
+  </section>
 
   <section id="why">
     <div class="wrap">
@@ -402,6 +416,22 @@
     } catch (e) { /* offline or file:// — keep demo */ }
     setTicker(m);
     drawCurve(m.us?.curve, m.us?.date || "", !!m.demo);
+  })();
+</script>
+<script>
+  // Top three lines of the nightly market brief.
+  (async () => {
+    try {
+      const r = await fetch("data/brief.json", { cache: "no-store" });
+      if (!r.ok) return;
+      const b = await r.json();
+      const obs = (b.observations || []).slice(0, 3);
+      if (!obs.length) return;
+      const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+      document.getElementById("briefList").innerHTML = obs.map(o => `<li>${esc(o)}</li>`).join("");
+      document.getElementById("briefStamp").textContent = `This week in rates · as of ${b.asof.us}`;
+      document.getElementById("brief").hidden = false;
+    } catch (e) { /* section stays hidden */ }
   })();
 </script>
 <script src="assets/config.js"></script>

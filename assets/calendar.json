@@ -1,0 +1,22 @@
+{
+  "_note": "Hand-maintained. Scheduled policy decision dates (the announcement day). Sources: federalreserve.gov FOMC calendar and 12 Nov 2026 revised 2027 schedule; bankofcanada.ca 2026 and 2027 schedules. Add the 2028 dates when they are published.",
+  "decisions": [
+    {"bank": "Fed", "date": "2026-12-09"},
+    {"bank": "Bank of Canada", "date": "2026-12-09"},
+    {"bank": "Fed", "date": "2027-01-27"},
+    {"bank": "Bank of Canada", "date": "2027-01-27"},
+    {"bank": "Bank of Canada", "date": "2027-03-03"},
+    {"bank": "Fed", "date": "2027-03-17"},
+    {"bank": "Fed", "date": "2027-04-28"},
+    {"bank": "Bank of Canada", "date": "2027-04-28"},
+    {"bank": "Bank of Canada", "date": "2027-06-02"},
+    {"bank": "Fed", "date": "2027-06-09"},
+    {"bank": "Bank of Canada", "date": "2027-07-21"},
+    {"bank": "Fed", "date": "2027-07-28"},
+    {"bank": "Bank of Canada", "date": "2027-09-08"},
+    {"bank": "Fed", "date": "2027-09-15"},
+    {"bank": "Bank of Canada", "date": "2027-10-27"},
+    {"bank": "Fed", "date": "2027-11-17"},
+    {"bank": "Bank of Canada", "date": "2027-12-08"}
+  ]
+}

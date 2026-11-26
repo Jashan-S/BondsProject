@@ -32,6 +32,14 @@ jobs:
       - name: Record history snapshot
         run: python scripts/fetch_history.py
 
+      - name: Backfill history (one-time; no-op once complete)
+        env:
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+        run: python scripts/backfill_history.py
+
+      - name: Build market brief
+        run: python scripts/build_brief.py
+
       - name: Fetch FINRA corporate aggregates
         env:
           FINRA_API_CLIENT_ID: ${{ secrets.FINRA_API_CLIENT_ID }}

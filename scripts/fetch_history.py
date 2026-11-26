@@ -84,6 +84,18 @@ def main() -> int:
         save(path, hist)
         wrote.append(f"spreads {date}")
 
+    # Policy rates, real yield and breakeven: one row per US close date.
+    macro = market.get("macro") or {}
+    if macro and date:
+        year = date[:4]
+        path = HIST_DIR / f"macro-{year}.json"
+        hist = load_history(path, {"series": "macro", "year": int(year)})
+        upsert(hist["days"], {"date": date,
+                              **{k: v.get("value") for k, v in macro.items()
+                                 if isinstance(v, dict)}})
+        save(path, hist)
+        wrote.append(f"macro {date}")
+
     # ICE BofA spread values are copyrighted (see fetch_data.py). Unless the
     # opt-in flag is set, remove any that earlier runs recorded.
     if os.environ.get("INCLUDE_ICE_SPREADS") != "1":
