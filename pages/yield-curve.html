@@ -90,6 +90,7 @@
 <footer>
   <div class="wrap">
     <p class="disclaimer"><strong>Important:</strong> Basispoint provides market data and education for informational purposes only. Nothing on this page is investment advice or a recommendation. Yields shown are end-of-day figures and may be delayed. Investing involves risk, including loss of principal.</p>
+    <p class="disclaimer">This product uses the FRED® API but is not endorsed or certified by the Federal Reserve Bank of St. Louis. <a href="terms.html">Terms</a> · <a href="privacy.html">Privacy</a> · <a href="https://fred.stlouisfed.org/docs/api/terms_of_use.html" rel="noopener">FRED API terms</a></p>
     <div class="foot-row">
       <span>© 2026 BASISPOINT · TORONTO</span>
       <span>DATA: FRED · BANK OF CANADA</span>
@@ -113,8 +114,8 @@
   const market = await getJSON("../data/market.json");
   if (!market) { put("stamp", "Data temporarily unavailable."); return; }
 
-  const usHist = await getJSON(`../data/history/us-curve-${year}.json`);
-  const caHist = await getJSON(`../data/history/ca-curve-${year}.json`);
+  const usHist = await bpLoadHistory("../data/history/", "us-curve");
+  const caHist = await bpLoadHistory("../data/history/", "ca-curve");
 
   put("stamp", market.demo
     ? "Sample data — live figures appear after the first pipeline run."
@@ -156,5 +157,7 @@
   if (series.length) put("histCap", `${series.length} DAYS RECORDED · FRED H.15`);
 })();
 </script>
+<script src="../assets/config.js"></script>
+<script src="../assets/site.js"></script>
 </body>
 </html>

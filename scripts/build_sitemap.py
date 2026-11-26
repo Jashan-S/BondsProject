@@ -19,15 +19,17 @@ PAGES = [
     ("/",                          "weekly", "1.0", True),
     ("/pages/yield-curve.html",    "daily",  "0.9", True),
     ("/pages/2s10s.html",          "daily",  "0.8", True),
-    ("/pages/credit-spreads.html", "daily",  "0.8", True),
+    ("/pages/credit-spreads.html", "monthly", "0.6", False),
     ("/pages/corporate-bonds.html","daily",  "0.8", True),
     ("/pages/ladder-builder.html", "weekly", "0.9", False),
     ("/pages/learn/index.html",    "weekly", "0.7", False),
     ("/pages/learn/bond-ladders-vs-gics.html", "monthly", "0.7", False),
     ("/pages/learn/duration.html", "monthly", "0.7", False),
+    ("/pages/terms.html",          "yearly",  "0.2", False),
+    ("/pages/privacy.html",        "yearly",  "0.2", False),
 ]
 
-STATIC_LASTMOD = "2026-07-09"  # bump when editing non-data page content
+STATIC_LASTMOD = "2026-11-13"  # bump when editing non-data page content
 
 
 def main() -> None:

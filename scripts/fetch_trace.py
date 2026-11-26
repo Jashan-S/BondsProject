@@ -5,7 +5,7 @@ write it to data/corporates.json.
 
 Datasets (group FixedIncomeMarket):
   - corporateMarketBreadth   : advances/declines, volume, highs/lows by segment
-  - corporateMarketSentiment : most-active IG/HY/convertible bonds with prices
+  - corporateMarketSentiment : trade counts and volume by trade type and segment
 
 Auth: many FINRA datasets allow unauthenticated access at low rate limits;
 higher limits require a free API account. This script tries the token flow
@@ -29,7 +29,7 @@ import re
 import sys
 import urllib.error
 import urllib.request
-from datetime import datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
 API_BASE = "https://api.finra.org/data/group/FixedIncomeMarket/name"
@@ -44,7 +44,9 @@ DATE_FIELD_CANDIDATES = [
     "weekStartDate", "processDate",
 ]
 OUT_PATH = Path(__file__).resolve().parent.parent / "data" / "corporates.json"
-MAX_SENTIMENT_ROWS = 15
+MAX_SENTIMENT_ROWS = 60
+LOOKBACK_DAYS = 14      # window asked of FINRA
+MAX_AGE_DAYS = 30       # older than this is never written to the site
 
 
 def get_token():
@@ -81,27 +83,83 @@ def fetch_dataset(name: str, token: str | None, query: str = "limit=100"):
     return data if isinstance(data, list) else []
 
 
-def fetch_rows(name: str, token: str | None):
-    """Fetch rows newest-first.
+def post_dataset(name: str, token: str | None, body: dict):
+    """POST query: the only way to filter by date on the FINRA Query API."""
+    headers = {"Accept": "application/json",
+               "Content-Type": "application/json",
+               "User-Agent": "basispoint-data/0.3"}
+    if token:
+        headers["Authorization"] = f"Bearer {token}"
+    req = urllib.request.Request(f"{API_BASE}/{name}", method="POST",
+                                 data=json.dumps(body).encode(),
+                                 headers=headers)
+    with urllib.request.urlopen(req, timeout=45) as resp:
+        raw = resp.read()
+    if not raw.strip():          # FINRA answers 204/empty when nothing matches
+        return []
+    data = json.loads(raw)
+    if isinstance(data, dict):
+        for key in ("data", "results", "records"):
+            if isinstance(data.get(key), list):
+                return data[key]
+        return []
+    return data if isinstance(data, list) else []
 
-    The API may return records oldest-first, and datasets span years — so an
-    unsorted `limit=N` can silently deliver ancient data (this happened:
-    a 2024 date on a 2026 site). Two passes: sample a few rows to detect the
-    date field, then request the real page sorted descending on it. If the
-    sort parameter is rejected, fall back to unsorted and let latest_rows()
-    salvage what it can.
+
+def fetch_rows(name: str, token: str | None, today: date | None = None):
+    """Fetch the most recent rows.
+
+    History of this function, so nobody repeats it:
+      1. Unsorted GET  -> the API returns the OLDEST rows (a 2024 date on a
+         2026 site).
+      2. GET with sortFields -> HTTP 400. FINRA only allows sortFields when
+         the request also carries an EQUAL compareFilter on every partition
+         field, so that silently fell back to (1).
+    What works is asking for a date window, then picking the newest date
+    locally:
+      A. POST dateRangeFilters for the last LOOKBACK_DAYS days.
+      B. If that is refused or empty, POST an EQUAL compareFilter one day at
+         a time, newest first (the form FINRA requires for partition fields).
+      C. Last resort: the unsorted GET, which main() will reject as stale.
     """
+    today = today or date.today()
     sample = fetch_dataset(name, token, "limit=5")
-    date_field = detect_date_field(sample)
-    if date_field:
+    date_field = detect_date_field(sample) or "tradeReportDate"
+
+    start = (today - timedelta(days=LOOKBACK_DAYS)).isoformat()
+    try:
+        rows = post_dataset(name, token, {
+            "limit": 5000,
+            "dateRangeFilters": [{"fieldName": date_field,
+                                  "startDate": start,
+                                  "endDate": today.isoformat()}],
+        })
+        if rows:
+            return rows
+        print(f"WARN {name}: no rows between {start} and {today}",
+              file=sys.stderr)
+    except Exception as exc:  # noqa: BLE001
+        print(f"WARN {name}: date-range query failed ({exc})", file=sys.stderr)
+
+    for back in range(0, LOOKBACK_DAYS + 1):
+        day = today - timedelta(days=back)
+        if day.weekday() >= 5:
+            continue
         try:
-            rows = fetch_dataset(name, token,
-                                 f"limit=100&sortFields=-{date_field}")
-            if rows:
-                return rows
+            rows = post_dataset(name, token, {
+                "limit": 5000,
+                "compareFilters": [{"fieldName": date_field,
+                                    "fieldValue": day.isoformat(),
+                                    "compareType": "EQUAL"}],
+            })
         except Exception as exc:  # noqa: BLE001
-            print(f"WARN {name}: sorted fetch failed ({exc}); "
-                  f"falling back to unsorted", file=sys.stderr)
+            print(f"WARN {name}: day query {day} failed ({exc})",
+                  file=sys.stderr)
+            break
+        if rows:
+            return rows
+
+    print(f"WARN {name}: falling back to unsorted GET", file=sys.stderr)
     return fetch_dataset(name, token)
 
 
@@ -143,7 +201,9 @@ def main() -> int:
     result = {
         "updated": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "demo": False,
-        "source": "FINRA Query API (TRACE aggregates)",
+        "source": "FINRA",
+        "notice": ("Data owned and provided by FINRA. Shown free of charge "
+                   "for non-commercial use; not to be redistributed."),
     }
     got_anything = False
 
@@ -159,6 +219,16 @@ def main() -> int:
             print(f"WARN {dataset}: {exc}", file=sys.stderr)
             continue
         date, rows_latest = latest_rows(rows)
+        if date:
+            try:
+                age = (datetime.now(timezone.utc).date()
+                       - datetime.fromisoformat(date[:10]).date()).days
+            except ValueError:
+                age = 0
+            if age > MAX_AGE_DAYS:
+                print(f"WARN {dataset}: newest row is {date} ({age} days old) "
+                      f"— not publishing it", file=sys.stderr)
+                continue
         if rows_latest:
             result[label] = {"date": date, "rows": rows_latest[:MAX_SENTIMENT_ROWS]
                              if label == "sentiment" else rows_latest}

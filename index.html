@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Basispoint — Fixed income intelligence without the terminal</title>
-<meta name="description" content="Bond market data, screeners, and ladder tools for self-directed investors. See the yields the terminal crowd sees, at one thousandth of the price.">
-<meta property="og:title" content="Basispoint — Fixed income intelligence without the terminal">
-<meta property="og:description" content="Live yield curves, bond screeners, and ladder tools for self-directed investors.">
+<title>Basispoint — Bond market data and tools without the terminal</title>
+<meta name="description" content="Live US and Canada yield curves, a bond ladder builder, yield alerts and plain-language guides for self-directed bond investors.">
+<meta property="og:title" content="Basispoint — Bond market data and tools without the terminal">
+<meta property="og:description" content="Live yield curves, a bond ladder builder and yield alerts for self-directed investors.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://bondtracker.ca/">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="preconnect" href="https://fonts.googleapis.com">
@@ -142,7 +142,7 @@
 <body>
 
 <div class="strip" aria-hidden="true">
-  <span>US 2Y <b id="t2">—</b></span><span>US 10Y <b id="t10">—</b></span><span>US 30Y <b id="t30">—</b></span><span>2s10s <b id="s210">—</b></span><span>CAN 10Y <b id="c10">—</b></span><span>IG SPREAD <b id="ig">—</b></span><span>HY SPREAD <b class="dn" id="hy">—</b></span><span class="dn" id="src">DELAYED · DEMO DATA</span>
+  <span>US 2Y <b id="t2">—</b></span><span>US 10Y <b id="t10">—</b></span><span>US 30Y <b id="t30">—</b></span><span>2s10s <b id="s210">—</b></span><span>CAN 2Y <b id="c2">—</b></span><span>CAN 10Y <b id="c10">—</b></span><span>CAN 30Y <b id="c30">—</b></span><span class="dn" id="src">DELAYED · DEMO DATA</span>
 </div>
 
 <header>
@@ -155,6 +155,7 @@
       <a href="pages/learn/index.html">Learn</a>
       <a href="#pricing">Pricing</a>
       <a href="#signup">Get the letter</a>
+      <a href="#signup" data-app-link="/sign-in" data-app-only hidden>Sign in</a>
     </nav>
   </div>
 </header>
@@ -164,12 +165,12 @@
     <div>
       <p class="eyebrow">Bond market data for the other 99% of investors</p>
       <h1>The terminal crowd sees every price. <em>Now you do too.</em></h1>
-      <p class="lede">Yield curves, bond screeners, fair-value checks, and ladder tools built from the same public trade data the professionals use — minus the $28,000-a-year terminal.</p>
+      <p class="lede">Live US and Canadian yield curves, a bond ladder builder, and yield alerts, built on public government data and explained in plain language. No $28,000-a-year terminal required.</p>
       <div class="cta-row">
         <a class="btn btn-solid" href="#signup">Get the free weekly letter</a>
         <a class="btn btn-ghost" href="#pricing">See plans</a>
       </div>
-      <p class="hero-note">No card required. Built on TRACE, FRED &amp; Bank of Canada data.</p>
+      <p class="hero-note">No card required. Yields from the Federal Reserve (H.15) and the Bank of Canada.</p>
     </div>
     <figure class="curve-card">
       <span class="tag">LIVE CURVE</span>
@@ -222,7 +223,7 @@
           <p class="note">Roughly 125 bps of markup, silently embedded in the price.</p>
         </div>
       </div>
-      <p class="spread-foot">Illustrative example. The markup never appears as a fee — it's just a worse price. Basispoint's fair-value check compares any quote you're shown against recent prints on the tape, so the spread stops being invisible.</p>
+      <p class="spread-foot">Illustrative example. The markup never appears as a fee — it is just a worse price. Checking a quote against recent trade prints needs licensed trade data; that tool is planned, not built. Until then, our free guides show how to check a quote yourself.</p>
     </div>
   </section>
 
@@ -231,12 +232,12 @@
       <h2>Tools, not tips.</h2>
       <p class="section-lede">We don't recommend bonds and we don't sell them. We build the instruments that let you judge them yourself.</p>
       <div class="features">
-        <div class="feature"><span class="k">SCREEN</span><h3>Bond screener</h3><p>Filter US and Canadian issues by yield, rating, sector, duration, and call features — the way a desk analyst would shortlist.</p></div>
-        <div class="feature"><span class="k">CHECK</span><h3>Fair-value vs. the tape</h3><p>Paste a quote, see how it compares to recent institutional prints on the same bond. Know the markup before you pay it.</p></div>
-        <div class="feature"><span class="k">BUILD</span><h3>Ladder &amp; barbell builder</h3><p>Construct maturity ladders with cash-flow and reinvestment modeling. <a href="pages/ladder-builder.html">Try the free version now &rarr;</a></p></div>
-        <div class="feature"><span class="k">WATCH</span><h3>Curve &amp; spread monitor</h3><p>US and Canada yield curves, 2s10s, credit spreads — charted daily with plain-language notes on what moved.</p></div>
-        <div class="feature"><span class="k">ALERT</span><h3>Yield &amp; downgrade alerts</h3><p>Set a target yield on a maturity or watch an issuer's rating. Get an email when the market comes to you.</p></div>
-        <div class="feature"><span class="k">LEARN</span><h3>The education library</h3><p>Duration, convexity, callable math, ladders vs. funds — explained for investors, not for a CFA exam.</p></div>
+        <div class="feature"><span class="k">BUILD · LIVE</span><h3>Ladder builder</h3><p>Design a Treasury or Government of Canada ladder on today's curve: rungs, income, duration, cash flows. <a href="pages/ladder-builder.html">Open the free tool &rarr;</a></p></div>
+        <div class="feature"><span class="k">WATCH · LIVE</span><h3>Curve monitor</h3><p>US and Canada yield curves and the 2s10s spread, charted every market day with history. <a href="pages/yield-curve.html">See today's curves &rarr;</a></p></div>
+        <div class="feature"><span class="k">ALERT · LIVE IN THE APP</span><h3>Yield alerts</h3><p>Set a level on any benchmark maturity and get one email when the market reaches it.</p></div>
+        <div class="feature"><span class="k">LEARN · LIVE</span><h3>The education library</h3><p>Duration, ladders versus GICs, how to read a curve — written for investors, not for an exam. <a href="pages/learn/index.html">Start reading &rarr;</a></p></div>
+        <div class="feature"><span class="k">SCREEN · PLANNED</span><h3>Corporate bond screener</h3><p>Filter individual issues by yield, sector and maturity. Needs licensed trade data, so it is not available yet.</p></div>
+        <div class="feature"><span class="k">CHECK · PLANNED</span><h3>Fair-value check</h3><p>Compare a quote you are shown with recent trade prints. Also waiting on licensed data.</p></div>
       </div>
     </div>
   </section>
@@ -244,46 +245,46 @@
   <section id="pricing">
     <div class="wrap">
       <h2>Clip the coupon.</h2>
-      <p class="section-lede">Bond certificates once came with literal coupons you clipped to collect interest. Ours just collect tools. Annual plans get two months free.</p>
+      <p class="section-lede">Bond certificates once came with literal coupons you clipped to collect interest. Ours just collect tools. Annual plans get two months free; cancel any time.</p>
       <div class="coupons">
         <div class="coupon">
           <p class="tier">Free</p>
           <p class="price">$0<small> / forever</small></p>
           <ul>
             <li><b>Daily yield curves</b> — US &amp; Canada</li>
-            <li>Screener, 10 results per search</li>
+            <li>Ladder builder on live yields</li>
             <li>1 saved ladder</li>
-            <li>Weekly letter, public archive</li>
-            <li>Full education library</li>
+            <li>2 yield alerts</li>
+            <li>Weekly letter &amp; education library</li>
           </ul>
-          <a class="btn btn-ghost" href="#signup">Start free</a>
+          <a class="btn btn-ghost" href="#signup" data-app-link="/sign-up" data-app-text="Start free">Get the free letter</a>
         </div>
         <div class="coupon featured">
-          <p class="tier">Pro — most clipped</p>
+          <p class="tier">Pro</p>
           <p class="price">$29<small> / month · $290 / yr</small></p>
           <ul>
             <li><b>Everything in Free</b>, plus</li>
-            <li>Full screener, saved screens</li>
-            <li><b>Fair-value check</b> vs. TRACE prints</li>
-            <li>Unlimited ladders, reinvestment modeling</li>
-            <li>10 yield &amp; downgrade alerts</li>
-            <li>Full weekly letter + data appendix</li>
+            <li>Unlimited saved ladders</li>
+            <li><b>Reinvestment projection</b> and rate-shock view</li>
+            <li>Cash-flow export to CSV</li>
+            <li>10 yield alerts</li>
+            <li>Curve history explorer</li>
           </ul>
-          <a class="btn btn-solid" href="#signup">Join the waitlist</a>
+          <a class="btn btn-solid" href="#signup" data-app-link="/account?plan=pro" data-app-text="Choose Pro">Join the waitlist</a>
         </div>
         <div class="coupon">
           <p class="tier">Desk</p>
           <p class="price">$99<small> / month · $990 / yr</small></p>
           <ul>
             <li><b>Everything in Pro</b>, plus</li>
-            <li>API access for your own models</li>
-            <li>Historical curve explorer &amp; exports</li>
-            <li>Unlimited alerts</li>
-            <li>3 seats — built for small RIAs</li>
+            <li>50 yield alerts</li>
+            <li>Curve history download (CSV)</li>
+            <li>Read-only API for government yield curves</li>
           </ul>
-          <a class="btn btn-ghost" href="#signup">Join the waitlist</a>
+          <a class="btn btn-ghost" href="#signup" data-app-link="/account?plan=desk" data-app-text="Choose Desk">Join the waitlist</a>
         </div>
       </div>
+      <p class="hero-note">Paid plans cover tools built on public government yield data. Corporate bond data on this site is provided free and is not part of any paid plan.</p>
       <p class="clip">✂ – – – – – – – – – – – – – – – – – – – – – – – – – – – – – – – – – – – – – – ✂</p>
     </div>
   </section>
@@ -296,11 +297,12 @@
           <p>The Basispoint letter: what moved in rates and credit this week, why it matters to your ladder, and the one number worth remembering. Free, and the archive stays public.</p>
         </div>
         <div>
-          <form class="signup-form" onsubmit="event.preventDefault();this.querySelector('input').value='';alert('Thanks — connect this form to your email provider (see README).');">
-            <input type="email" required placeholder="you@example.com" aria-label="Email address">
+          <form class="signup-form" data-newsletter>
+            <input type="email" name="email" required placeholder="you@example.com" aria-label="Email address">
             <button class="btn" type="submit">Subscribe</button>
           </form>
-          <p class="fine">No spam. Unsubscribe anytime. ~2,400 words max, we promise.</p>
+          <p class="fine" data-newsletter-note hidden></p>
+          <p class="fine">No spam. Unsubscribe anytime.</p>
         </div>
       </div>
     </div>
@@ -310,9 +312,10 @@
 <footer>
   <div class="wrap">
     <p class="disclaimer"><strong>Important:</strong> Basispoint provides market data, analytics, and education for informational purposes only. Nothing on this site is investment advice, a recommendation, or an offer to buy or sell any security. Bond prices and yields shown may be delayed or illustrative. Investing involves risk, including loss of principal. Consult a registered advisor about your situation.</p>
+    <p class="disclaimer">This product uses the FRED® API but is not endorsed or certified by the Federal Reserve Bank of St. Louis. <a href="pages/terms.html">Terms</a> · <a href="pages/privacy.html">Privacy</a> · <a href="https://fred.stlouisfed.org/docs/api/terms_of_use.html" rel="noopener">FRED API terms</a></p>
     <div class="foot-row">
       <span>© 2026 BASISPOINT · TORONTO</span>
-      <span>DATA: FRED · US TREASURY · BANK OF CANADA · FINRA TRACE (EOD)</span>
+      <span>DATA: FEDERAL RESERVE H.15 VIA FRED · BANK OF CANADA · FINRA</span>
     </div>
   </div>
 </footer>
@@ -325,8 +328,8 @@
     us: { date: "sample", curve: [
       {tenor:"3M",yield:4.93},{tenor:"2Y",yield:4.21},{tenor:"5Y",yield:4.38},
       {tenor:"10Y",yield:4.62},{tenor:"20Y",yield:4.86},{tenor:"30Y",yield:4.97}]},
-    canada: { curve: [{tenor:"10Y",yield:3.38}] },
-    spreads: { us_2s10s_bp:41, ig_oas_bp:96, hy_oas_bp:318 }
+    canada: { curve: [{tenor:"2Y",yield:2.91},{tenor:"10Y",yield:3.38},{tenor:"30Y",yield:3.61}] },
+    spreads: { us_2s10s_bp:41 }
   };
 
   const fmtPct = v => v == null ? "—" : v.toFixed(2) + "%";
@@ -338,8 +341,8 @@
     const ca = Object.fromEntries((m.canada?.curve || []).map(p => [p.tenor, p.yield]));
     const s = m.spreads || {};
     put("t2", fmtPct(us["2Y"]));   put("t10", fmtPct(us["10Y"])); put("t30", fmtPct(us["30Y"]));
-    put("s210", fmtBp(s.us_2s10s_bp)); put("c10", fmtPct(ca["10Y"]));
-    put("ig", fmtBp(s.ig_oas_bp)); put("hy", fmtBp(s.hy_oas_bp));
+    put("s210", fmtBp(s.us_2s10s_bp));
+    put("c2", fmtPct(ca["2Y"])); put("c10", fmtPct(ca["10Y"])); put("c30", fmtPct(ca["30Y"]));
     put("src", m.demo ? "DELAYED · DEMO DATA" : "EOD · FRED + BANK OF CANADA");
   }
 
@@ -401,10 +404,7 @@
     drawCurve(m.us?.curve, m.us?.date || "", !!m.demo);
   })();
 </script>
-  <!-- ANALYTICS: create a free account at goatcounter.com, then uncomment and
-       replace YOURCODE with your site code. No cookies, no banner needed.
-  <script data-goatcounter="https://YOURCODE.goatcounter.com/count"
-          async src="//gc.zgo.at/count.js"></script>
-  -->
+<script src="assets/config.js"></script>
+<script src="assets/site.js"></script>
 </body>
 </html>

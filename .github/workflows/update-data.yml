@@ -9,13 +9,18 @@ on:
 permissions:
   contents: write
 
+# Never let two runs race each other to push.
+concurrency:
+  group: update-market-data
+  cancel-in-progress: false
+
 jobs:
   update:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
 
@@ -27,7 +32,7 @@ jobs:
       - name: Record history snapshot
         run: python scripts/fetch_history.py
 
-      - name: Fetch TRACE corporate aggregates
+      - name: Fetch FINRA corporate aggregates
         env:
           FINRA_API_CLIENT_ID: ${{ secrets.FINRA_API_CLIENT_ID }}
           FINRA_API_CLIENT_SECRET: ${{ secrets.FINRA_API_CLIENT_SECRET }}
@@ -43,6 +48,8 @@ jobs:
           git add data/ sitemap.xml
           git diff --cached --quiet && echo "No changes" && exit 0
           git commit -m "Update market data [skip ci]"
+          # If you pushed while this job ran, replay the data commit on top.
+          git pull --rebase origin main
           git push
 
       - name: Freshness guard (fails loudly if sources stale)

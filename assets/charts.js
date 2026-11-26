@@ -1,6 +1,7 @@
 /* Basispoint shared charts — no dependencies.
    bpCurveChart(el, points, opts)  — yield curve: [{tenor, yield}, ...]
    bpLineChart(el, series, opts)   — time series: [{date, value}, ...]
+   bpLoadHistory(baseUrl, name)    — {days:[...]} merged across years
    Both render an SVG into `el` sized by viewBox (responsive via CSS). */
 
 (function () {
@@ -25,6 +26,22 @@
     const pad = Math.max(minPad, (hi - lo) * 0.18);
     return [lo - pad, hi + pad];
   }
+
+  /* Load a history series across the year boundary: last year's file plus
+     this year's, merged and sorted. A missing file is simply skipped, so
+     charts keep working on 1 January before the first run of the new year. */
+  window.bpLoadHistory = async function (baseUrl, name) {
+    const year = new Date().getFullYear();
+    const days = [];
+    for (const y of [year - 1, year]) {
+      try {
+        const r = await fetch(`${baseUrl}${name}-${y}.json`, { cache: "no-store" });
+        if (r.ok) days.push(...((await r.json()).days || []));
+      } catch (e) { /* skip */ }
+    }
+    days.sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0));
+    return { days };
+  };
 
   window.bpCurveChart = function (el, points, opts = {}) {
     const pts = (points || []).filter(p => p.yield != null);

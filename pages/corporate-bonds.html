@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>US Corporate Bond Market Today — Activity &amp; Most Active Bonds | Basispoint</title>
-<meta name="description" content="Daily US corporate bond market activity from FINRA TRACE: advances and declines, trading volume, and the most actively traded investment-grade and high-yield bonds.">
+<title>US Corporate Bond Market Today — Breadth &amp; Volume | Basispoint</title>
+<meta name="description" content="Daily US corporate bond market statistics from FINRA: advances and declines, trade counts and volume for investment-grade, high-yield and convertible bonds.">
 <meta property="og:title" content="US Corporate Bond Market Today">
-<meta property="og:description" content="Daily TRACE market activity: breadth, volume, and the most active corporate bonds.">
+<meta property="og:description" content="Daily FINRA market statistics: breadth and volume across the corporate bond market.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://bondtracker.ca/pages/corporate-bonds.html">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -45,9 +45,9 @@
 
 <main>
   <div class="wrap">
-    <p class="eyebrow">Corporate bonds · TRACE aggregates · Updated every market day</p>
+    <p class="eyebrow">Corporate bonds · FINRA market statistics · Free</p>
     <h1>The US corporate bond market today</h1>
-    <p class="lede">Where equities have a ticker tape, corporate bonds have TRACE — FINRA's record of every reported trade. This page distills the day's aggregate activity: how broadly the market rose or fell, how much traded, and which bonds everyone was trading.</p>
+    <p class="lede">Where equities have a ticker tape, corporate bonds have TRACE — FINRA's record of every reported trade. This page shows the day's market-wide activity: how broadly prices rose or fell and how much traded.</p>
     <p class="stamp" id="stamp">Loading latest data…</p>
 
     <div id="pending" hidden>Corporate data pipeline is configured but hasn't completed its first run yet. Aggregates appear here automatically once it does.</div>
@@ -59,17 +59,18 @@
     </div>
 
     <div id="activeWrap" hidden>
-      <h2>Most active bonds</h2>
-      <p>The issues with the heaviest reported trading — typically large, liquid benchmark bonds from household-name issuers. Heavy activity usually means tighter pricing; thinly traded bonds are where retail markups hide.</p>
+      <h2>Trading activity by type</h2>
+      <p>Trade counts and volume for the day, split by who traded and by market segment. Heavy activity usually means tighter pricing; thinly traded bonds are where retail markups hide.</p>
       <div class="tbl-scroll">
         <table id="activeTable"><thead></thead><tbody></tbody></table>
       </div>
       <p class="note" id="activeNote"></p>
     </div>
 
-    <h2>Why aggregate data first</h2>
-    <p>Everything above is <em>derived, aggregate</em> information — market-level statistics computed from TRACE rather than a rebroadcast of individual trade prints. That distinction matters: it's the legally clean way to bring corporate bond transparency to a free page. The bond-by-bond layer — screening individual issues, checking a quote against recent institutional prints — is the paid tooling on our <a href="../index.html#pricing">roadmap</a>, built on properly licensed per-trade data.</p>
-    <p>If you're new to corporates, the one number to internalize from this page is volume concentration: a handful of mega-liquid bonds trade constantly while tens of thousands of issues barely trade at all. Liquidity is the corporate bond market's real currency, and the <a href="credit-spreads.html">credit spread</a> you're paid always includes compensation for how hard a bond is to sell.</p>
+    <h2>What this page is, and is not</h2>
+    <p>These are market-wide statistics published by FINRA from TRACE, its record of reported corporate bond trades. FINRA owns the data. It is shown here free of charge for personal, non-commercial use, it is not part of any paid Basispoint plan, and it may not be copied or redistributed from this site.</p>
+    <p>This page does not show individual bonds or prices. Screening single issues or checking a quote against recent trades needs licensed trade-level data, which Basispoint does not have yet.</p>
+    <p>If you are new to corporates, the idea to take from this page is liquidity: a small number of large bonds trade constantly while tens of thousands of issues barely trade at all. The <a href="credit-spreads.html">credit spread</a> you are paid always includes compensation for how hard a bond is to sell.</p>
 
     <p class="note">The week's corporate market story, every Sunday — <a href="../index.html#signup">the free Basispoint letter</a>.</p>
   </div>
@@ -77,10 +78,11 @@
 
 <footer>
   <div class="wrap">
-    <p class="disclaimer"><strong>Important:</strong> Basispoint provides market data and education for informational purposes only. Nothing on this page is investment advice or a recommendation. Aggregate statistics are derived from FINRA TRACE data; figures are end-of-day and may be delayed. Investing involves risk, including loss of principal.</p>
+    <p class="disclaimer"><strong>Important:</strong> Basispoint provides market data and education for informational purposes only. Nothing on this page is investment advice or a recommendation. Market statistics on this page are owned and provided by FINRA, shown free for non-commercial use, and may be delayed. Investing involves risk, including loss of principal.</p>
+    <p class="disclaimer">This product uses the FRED® API but is not endorsed or certified by the Federal Reserve Bank of St. Louis. <a href="terms.html">Terms</a> · <a href="privacy.html">Privacy</a> · <a href="https://fred.stlouisfed.org/docs/api/terms_of_use.html" rel="noopener">FRED API terms</a></p>
     <div class="foot-row">
       <span>© 2026 BASISPOINT · TORONTO</span>
-      <span>DATA: FINRA TRACE AGGREGATES (DERIVED)</span>
+      <span>SOURCE AND OWNER OF DATA: FINRA</span>
     </div>
   </div>
 </footer>
@@ -111,7 +113,15 @@
   }
 
   const date = data.breadth?.date || data.sentiment?.date || "";
-  $("stamp").textContent = `As of US close ${date} · Updated nightly · Source: FINRA TRACE`;
+  // Never present old numbers as current: hide anything older than 30 days.
+  const ageDays = date ? (Date.now() - new Date(date + "T00:00:00Z").getTime()) / 864e5 : 0;
+  if (ageDays > 30) {
+    $("stamp").textContent = "Data feed delayed";
+    $("pending").textContent = "The FINRA data feed is delayed, so no figures are shown rather than showing old ones. They return automatically once the feed catches up.";
+    $("pending").hidden = false;
+    return;
+  }
+  $("stamp").textContent = `As of ${date} · Updated on market days · Source: FINRA`;
 
   // ---- breadth: one card per row/segment, listing its numeric fields ----
   const bRows = data.breadth?.rows || [];
@@ -130,23 +140,32 @@
     }).join("");
   }
 
-  // ---- most active: generic table over the most useful columns ----
+  // ---- activity: one row per trade type / segment, text columns first ----
+  const esc = s => String(s).replace(/[&<>"]/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch]));
   const sRows = data.sentiment?.rows || [];
   if (sRows.length) {
     $("activeWrap").hidden = false;
-    const keys = Object.keys(sRows[0]);
-    const preferred = keys.filter(k =>
-      /(issuer|issue|name|symbol|coupon|maturity|price|yield|change|volume|rating)/i.test(k)
-      && !/date/i.test(k));
-    const cols = (preferred.length ? preferred : keys.filter(k => !/date/i.test(k))).slice(0, 7);
+    const keys = Object.keys(sRows[0]).filter(k => !/date/i.test(k));
+    const textCols = keys.filter(k => !isNum(sRows[0][k]));
+    const numCols = keys.filter(k => isNum(sRows[0][k]));
+    const cols = [...textCols, ...numCols].slice(0, 7);
+    // Name text columns by what their values are, whatever the field is called.
+    const colName = k => {
+      const vals = sRows.map(r => String(r[k] ?? "").toLowerCase());
+      if (vals.some(v => /customer|dealer|affiliate/.test(v))) return "Trade type";
+      if (vals.some(v => /investment grade|high yield|convertible/.test(v))) return "Segment";
+      return label(k);
+    };
     document.querySelector("#activeTable thead").innerHTML =
-      "<tr>" + cols.map(k => `<th>${label(k)}</th>`).join("") + "</tr>";
+      "<tr>" + cols.map(k => `<th>${esc(colName(k))}</th>`).join("") + "</tr>";
     document.querySelector("#activeTable tbody").innerHTML = sRows.map(r =>
-      "<tr>" + cols.map(k => `<td>${r[k] == null ? "—" : fmt(isNum(r[k]) ? Number(r[k]) : r[k])}</td>`).join("") + "</tr>"
+      "<tr>" + cols.map(k => `<td>${r[k] == null ? "—" : esc(fmt(isNum(r[k]) ? Number(r[k]) : r[k]))}</td>`).join("") + "</tr>"
     ).join("");
-    $("activeNote").textContent = `${sRows.length} most active issues shown.`;
+    $("activeNote").textContent = `${sRows.length} rows. Volume is as reported by FINRA.`;
   }
 })();
 </script>
+<script src="../assets/config.js"></script>
+<script src="../assets/site.js"></script>
 </body>
 </html>

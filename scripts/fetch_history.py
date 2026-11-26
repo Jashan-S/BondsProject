@@ -15,6 +15,7 @@ Skips entirely if market.json is still seed/demo data.
 """
 
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -71,6 +72,9 @@ def main() -> int:
         wrote.append(f"{country} {date} ({len(hist['days'])} days)")
 
     spreads = market.get("spreads") or {}
+    if os.environ.get("INCLUDE_ICE_SPREADS") != "1":
+        spreads = {k: v for k, v in spreads.items()
+                   if k not in ("ig_oas_bp", "hy_oas_bp")}
     date = (market.get("us") or {}).get("date")
     if spreads and date:
         year = date[:4]
@@ -79,6 +83,24 @@ def main() -> int:
         upsert(hist["days"], {"date": date, **spreads})
         save(path, hist)
         wrote.append(f"spreads {date}")
+
+    # ICE BofA spread values are copyrighted (see fetch_data.py). Unless the
+    # opt-in flag is set, remove any that earlier runs recorded.
+    if os.environ.get("INCLUDE_ICE_SPREADS") != "1":
+        for path in sorted(HIST_DIR.glob("spreads-*.json")):
+            try:
+                hist = json.loads(path.read_text())
+            except json.JSONDecodeError:
+                continue
+            removed = 0
+            for day in hist.get("days", []):
+                for key in ("ig_oas_bp", "hy_oas_bp"):
+                    if key in day:
+                        del day[key]
+                        removed += 1
+            if removed:
+                save(path, hist)
+                wrote.append(f"scrubbed {removed} ICE values from {path.name}")
 
     print("Recorded: " + "; ".join(wrote) if wrote else "Nothing recorded")
     return 0

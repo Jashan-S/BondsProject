@@ -75,6 +75,7 @@
 <footer>
   <div class="wrap">
     <p class="disclaimer"><strong>Important:</strong> Basispoint provides market data and education for informational purposes only. Nothing on this page is investment advice or a recommendation. Figures are end-of-day and may be delayed. Investing involves risk, including loss of principal.</p>
+    <p class="disclaimer">This product uses the FRED® API but is not endorsed or certified by the Federal Reserve Bank of St. Louis. <a href="terms.html">Terms</a> · <a href="privacy.html">Privacy</a> · <a href="https://fred.stlouisfed.org/docs/api/terms_of_use.html" rel="noopener">FRED API terms</a></p>
     <div class="foot-row">
       <span>© 2026 BASISPOINT · TORONTO</span>
       <span>DATA: FRED (SPREAD COMPUTED FROM H.15 CONSTANT MATURITY YIELDS)</span>
@@ -109,7 +110,7 @@
   put("y10", us["10Y"] != null ? us["10Y"].toFixed(2) + "%" : "—");
   put("y2",  us["2Y"]  != null ? us["2Y"].toFixed(2)  + "%" : "—");
 
-  const hist = await getJSON(`../data/history/spreads-${year}.json`);
+  const hist = await bpLoadHistory("../data/history/", "spreads");
   const series = (hist?.days || [])
     .filter(d => d.us_2s10s_bp != null)
     .map(d => ({ date: d.date, value: d.us_2s10s_bp }));
@@ -118,5 +119,7 @@
   if (series.length) put("histCap", `${series.length} DAYS RECORDED`);
 })();
 </script>
+<script src="../assets/config.js"></script>
+<script src="../assets/site.js"></script>
 </body>
 </html>

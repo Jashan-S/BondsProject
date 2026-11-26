@@ -33,16 +33,23 @@ FRED_TENORS = [
     ("30Y", "DGS30", 30),
 ]
 
-# ICE BofA option-adjusted spreads, reported in percent on FRED
+# ICE BofA option-adjusted spreads. These series are COPYRIGHTED by ICE Data
+# Indices and tagged "Pre-Approval Required" on FRED: publishing them needs
+# ICE's written permission, which FRED cannot grant. They are therefore OFF
+# by default. Set INCLUDE_ICE_SPREADS=1 only once you hold that permission.
+INCLUDE_ICE_SPREADS = os.environ.get("INCLUDE_ICE_SPREADS") == "1"
 FRED_SPREADS = {
     "ig_oas": "BAMLC0A0CM",    # US corporate investment grade
     "hy_oas": "BAMLH0A0HYM2",  # US high yield
-}
+} if INCLUDE_ICE_SPREADS else {}
 
 # (tenor label, Bank of Canada Valet series id, maturity in years)
-# Verify ids at https://www.bankofcanada.ca/valet/docs if any fail.
+# Bills are TB.CDN.<term>.MID, bonds are BD.CDN.<term>.DQ.YLD. A wrong id is
+# skipped with a WARN, never fatal. Verify at bankofcanada.ca/valet/docs.
 BOC_TENORS = [
-    ("3M", "TB.CDN.90D.DQ.YLD", 0.25),
+    ("3M", "TB.CDN.90D.MID", 0.25),
+    ("6M", "TB.CDN.180D.MID", 0.5),
+    ("1Y", "TB.CDN.1Y.MID", 1),
     ("2Y", "BD.CDN.2YR.DQ.YLD", 2),
     ("3Y", "BD.CDN.3YR.DQ.YLD", 3),
     ("5Y", "BD.CDN.5YR.DQ.YLD", 5),

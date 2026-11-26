@@ -101,7 +101,7 @@
         <tbody></tbody>
       </table>
     </div>
-    <p class="note">When a rung matures, the classic move is reinvesting the principal at the ladder's far end — keeping the structure rolling at whatever rates then prevail. Reinvestment modeling and saved ladders are coming in the full toolkit.</p>
+    <p class="note">When a rung matures, the classic move is reinvesting the principal at the ladder's far end, keeping the structure rolling at whatever rates then prevail. <a href="../index.html#pricing" data-app-link="/sign-up" data-app-text="Create a free account to save this ladder and set yield alerts &rarr;">Saved ladders and yield alerts are part of the app &rarr;</a></p>
 
     <h2>How the estimates work</h2>
     <p>Yields per rung are interpolated from today's benchmark government curve (the same data on our <a href="yield-curve.html">yield-curve page</a>, refreshed nightly). Estimates assume bonds bought near par, so income ≈ allocation × yield; real purchases will differ — bonds trade above or below par, and the exact issue you buy won't sit precisely on the benchmark curve. Duration per rung uses the standard par-bond approximation, and the ladder's <a href="learn/duration.html">duration</a> is the allocation-weighted average. Treat everything here as a well-informed sketch for comparing structures, not a quote.</p>
@@ -113,6 +113,7 @@
 <footer>
   <div class="wrap">
     <p class="disclaimer"><strong>Important:</strong> This calculator is general education using benchmark yields, not investment advice, a quote, or an offer. Actual bond prices, yields, and availability vary. Consult a registered advisor about your situation. Investing involves risk, including loss of principal.</p>
+    <p class="disclaimer">This product uses the FRED® API but is not endorsed or certified by the Federal Reserve Bank of St. Louis. <a href="terms.html">Terms</a> · <a href="privacy.html">Privacy</a> · <a href="https://fred.stlouisfed.org/docs/api/terms_of_use.html" rel="noopener">FRED API terms</a></p>
     <div class="foot-row">
       <span>© 2026 BASISPOINT · TORONTO</span>
       <span>YIELDS: FRED H.15 · BANK OF CANADA</span>
@@ -193,7 +194,8 @@
     const lastYear = Math.ceil(rungs[n - 1].T);
     let rows = "";
     for (let yr = 1; yr <= lastYear; yr++) {
-      const coupons = rungs.filter(r => r.T > yr - 1).reduce((s, r) => s + r.income, 0);
+      // A rung only pays for the part of the year it is still outstanding.
+      const coupons = rungs.reduce((s, r) => s + r.income * Math.max(0, Math.min(1, r.T - (yr - 1))), 0);
       const principal = rungs.filter(r => r.T > yr - 1 && r.T <= yr).reduce((s, r) => s + r.alloc, 0);
       rows += `<tr><td>${yr}</td><td>${money(coupons, ccy)}</td>` +
               `<td>${principal ? money(principal, ccy) : "—"}</td>` +
@@ -207,5 +209,7 @@
   build();
 })();
 </script>
+<script src="../assets/config.js"></script>
+<script src="../assets/site.js"></script>
 </body>
 </html>
