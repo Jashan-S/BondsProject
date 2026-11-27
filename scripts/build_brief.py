@@ -150,11 +150,17 @@ def observations(b: dict) -> list[str]:
             out.append(f"The {label} 2-year yield is within 15bp of the {bank}, consistent with "
                        f"markets expecting little net change in rates over two years.")
 
-    d = b.get("decomposition", {}).get("1m")
-    if d and d.get("nominal") is not None and abs(d["nominal"]) >= 10 \
-            and d.get("real") is not None and d.get("breakeven") is not None:
+    # The shortest of one or three months in which the 10-year moved 10bp+.
+    for win, words in (("1m", "month"), ("3m", "three months")):
+        d = b.get("decomposition", {}).get(win)
+        if d and d.get("nominal") is not None and abs(d["nominal"]) >= 10 \
+                and d.get("real") is not None and d.get("breakeven") is not None:
+            break
+    else:
+        d = None
+    if d:
         driver = "real yields" if abs(d["real"]) >= abs(d["breakeven"]) else "inflation expectations"
-        out.append(f"Over the past month the US 10-year moved {fmt_bp(d['nominal'])}: real yield "
+        out.append(f"Over the past {words} the US 10-year moved {fmt_bp(d['nominal'])}: real yield "
                    f"{fmt_bp(d['real'])}, inflation breakeven {fmt_bp(d['breakeven'])}. Most of the "
                    f"move came from {driver}.")
 
@@ -258,7 +264,13 @@ def main() -> int:
 
     # US 10-year: nominal = real + breakeven (approximately).
     decomp = {}
-    if len(macro) > 1:
+    # Only days carrying both real yield and breakeven, and a US close:
+    # policy rates are published on weekends and holidays, these are not.
+    us_dates = {r["date"] for r in us}
+    split = [r for r in macro if r.get("us_real_10y") is not None
+             and r.get("us_breakeven_10y") is not None and r["date"] in us_dates]
+    if len(split) > 1:
+        macro = split
         last = macro[-1]
         for label, n in (("1w", 7), ("1m", 30), ("3m", 91)):
             prev = on_or_before(macro, days_before(last["date"], n))

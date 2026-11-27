@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-27T04:27:12+00:00",
+  "updated": "2026-11-27T07:58:12+00:00",
   "asof": {
     "us": "2026-11-24",
     "canada": "2026-11-25"
@@ -232,25 +232,25 @@
   },
   "decomposition": {
     "1w": {
-      "from": "2026-11-19",
-      "to": "2026-11-26",
-      "nominal": -13,
-      "real": null,
-      "breakeven": null
+      "from": "2026-11-17",
+      "to": "2026-11-24",
+      "nominal": -19,
+      "real": -10,
+      "breakeven": -9
     },
     "1m": {
-      "from": "2026-10-27",
-      "to": "2026-11-26",
-      "nominal": -8,
-      "real": null,
-      "breakeven": null
+      "from": "2026-10-23",
+      "to": "2026-11-24",
+      "nominal": -9,
+      "real": 13,
+      "breakeven": -22
     },
     "3m": {
-      "from": "2026-08-27",
-      "to": "2026-11-26",
-      "nominal": 24,
-      "real": null,
-      "breakeven": null
+      "from": "2026-08-25",
+      "to": "2026-11-24",
+      "nominal": 27,
+      "real": 47,
+      "breakeven": -20
     }
   },
   "levels": {
@@ -261,37 +261,37 @@
     {
       "bank": "Fed",
       "date": "2026-12-09",
-      "days_away": 12,
+      "days_away": 13,
       "date_label": "Wed 09 Dec 2026"
     },
     {
       "bank": "Bank of Canada",
       "date": "2026-12-09",
-      "days_away": 12,
+      "days_away": 13,
       "date_label": "Wed 09 Dec 2026"
     },
     {
       "bank": "Fed",
       "date": "2027-01-27",
-      "days_away": 61,
+      "days_away": 62,
       "date_label": "Wed 27 Jan 2027"
     },
     {
       "bank": "Bank of Canada",
       "date": "2027-01-27",
-      "days_away": 61,
+      "days_away": 62,
       "date_label": "Wed 27 Jan 2027"
     },
     {
       "bank": "Bank of Canada",
       "date": "2027-03-03",
-      "days_away": 96,
+      "days_away": 97,
       "date_label": "Wed 03 Mar 2027"
     },
     {
       "bank": "Fed",
       "date": "2027-03-17",
-      "days_away": 110,
+      "days_away": 111,
       "date_label": "Wed 17 Mar 2027"
     }
   ],
@@ -301,8 +301,9 @@
     "The US curve is positively sloped: the 10-year yields 28bp more than the 2-year.",
     "The US 2-year yield is 75bp above the Fed funds target midpoint. A 2-year yield above the policy rate is consistent with markets expecting rates to average higher over the next two years.",
     "The Canadian 2-year yield is 74bp above the Bank of Canada's target rate. A 2-year yield above the policy rate is consistent with markets expecting rates to average higher over the next two years.",
+    "Over the past three months the US 10-year moved +27bp: real yield +47bp, inflation breakeven -20bp. Most of the move came from real yields.",
     "US 10-year bonds yield 124bp more than Canadian 10-year bonds.",
-    "Next Fed decision: Wed 09 Dec 2026, in 12 days.",
-    "Next Bank of Canada decision: Wed 09 Dec 2026, in 12 days."
+    "Next Fed decision: Wed 09 Dec 2026, in 13 days.",
+    "Next Bank of Canada decision: Wed 09 Dec 2026, in 13 days."
   ]
 }
