@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-26T04:17:38+00:00",
+  "updated": "2026-11-27T04:27:03+00:00",
   "demo": false,
   "us": {
     "date": "2026-11-24",
@@ -52,8 +52,23 @@
     ]
   },
   "canada": {
-    "date": "2026-11-24",
+    "date": "2026-11-25",
     "curve": [
+      {
+        "tenor": "3M",
+        "years": 0.25,
+        "yield": 2.69
+      },
+      {
+        "tenor": "6M",
+        "years": 0.5,
+        "yield": 2.99
+      },
+      {
+        "tenor": "1Y",
+        "years": 1,
+        "yield": 3.06
+      },
       {
         "tenor": "2Y",
         "years": 2,
@@ -67,28 +82,48 @@
       {
         "tenor": "5Y",
         "years": 5,
-        "yield": 3.42
+        "yield": 3.41
       },
       {
         "tenor": "7Y",
         "years": 7,
-        "yield": 3.5
+        "yield": 3.49
       },
       {
         "tenor": "10Y",
         "years": 10,
-        "yield": 3.67
+        "yield": 3.65
       },
       {
         "tenor": "30Y",
         "years": 30,
-        "yield": 4.02
+        "yield": 3.99
       }
     ]
   },
   "spreads": {
-    "us_2s10s_bp": 28,
-    "ig_oas_bp": 98,
-    "hy_oas_bp": 372
+    "us_2s10s_bp": 28
+  },
+  "macro": {
+    "fed_upper": {
+      "value": 4.0,
+      "date": "2026-11-26"
+    },
+    "fed_lower": {
+      "value": 3.75,
+      "date": "2026-11-26"
+    },
+    "us_real_10y": {
+      "value": 2.79,
+      "date": "2026-11-24"
+    },
+    "us_breakeven_10y": {
+      "value": 2.12,
+      "date": "2026-11-25"
+    },
+    "boc_target": {
+      "value": 2.5,
+      "date": "2026-11-25"
+    }
   }
 }
