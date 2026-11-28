@@ -1,8 +1,8 @@
 {
-  "updated": "2026-11-27T07:58:12+00:00",
+  "updated": "2026-11-28T04:08:58+00:00",
   "asof": {
-    "us": "2026-11-24",
-    "canada": "2026-11-25"
+    "us": "2026-11-25",
+    "canada": "2026-11-26"
   },
   "history_from": {
     "us": "2024-01-02",
@@ -11,203 +11,203 @@
   "us": {
     "moves": {
       "2Y": {
-        "level": 4.63,
-        "date": "2026-11-24",
-        "1d": 0,
-        "1w": -17,
-        "1m": -6,
-        "3m": 46,
-        "1y": 117
+        "level": 4.61,
+        "date": "2026-11-25",
+        "1d": -2,
+        "1w": -19,
+        "1m": -7,
+        "3m": 42,
+        "1y": 118
       },
       "5Y": {
-        "level": 4.69,
-        "date": "2026-11-24",
-        "1d": -5,
-        "1w": -21,
-        "1m": -13,
-        "3m": 34,
-        "1y": 108
+        "level": 4.65,
+        "date": "2026-11-25",
+        "1d": -4,
+        "1w": -24,
+        "1m": -19,
+        "3m": 28,
+        "1y": 110
       },
       "10Y": {
-        "level": 4.91,
-        "date": "2026-11-24",
-        "1d": -1,
-        "1w": -19,
-        "1m": -9,
-        "3m": 27,
-        "1y": 87
+        "level": 4.85,
+        "date": "2026-11-25",
+        "1d": -6,
+        "1w": -22,
+        "1m": -15,
+        "3m": 19,
+        "1y": 84
       },
       "30Y": {
-        "level": 5.3,
-        "date": "2026-11-24",
-        "1d": 1,
-        "1w": -16,
-        "1m": -3,
-        "3m": 13,
-        "1y": 62
+        "level": 5.24,
+        "date": "2026-11-25",
+        "1d": -6,
+        "1w": -17,
+        "1m": -7,
+        "3m": 6,
+        "1y": 57
       }
     },
     "slopes": {
       "2s10s": {
-        "level": 28,
-        "date": "2026-11-24",
-        "1d": -1,
-        "1w": -2,
-        "1m": -3,
-        "3m": -19,
-        "1y": -30
+        "level": 24,
+        "date": "2026-11-25",
+        "1d": -4,
+        "1w": -3,
+        "1m": -8,
+        "3m": -23,
+        "1y": -34
       },
       "5s30s": {
-        "level": 61,
-        "date": "2026-11-24",
-        "1d": 6,
-        "1w": 5,
-        "1m": 10,
-        "3m": -21,
-        "1y": -46
+        "level": 59,
+        "date": "2026-11-25",
+        "1d": -2,
+        "1w": 7,
+        "1m": 12,
+        "3m": -22,
+        "1y": -53
       },
       "3m10y": {
-        "level": 55,
-        "date": "2026-11-24",
-        "1d": 0,
+        "level": 51,
+        "date": "2026-11-25",
+        "1d": -4,
         "1w": -22,
-        "1m": -23,
-        "3m": -23,
-        "1y": 42
+        "1m": -27,
+        "3m": -30,
+        "1y": 40
       }
     },
     "range_1y": {
       "2Y": {
         "window_days": 365,
-        "from": "2025-11-24",
+        "from": "2025-11-25",
         "n": 251,
         "low": 3.38,
         "low_date": "2026-02-27",
         "high": 4.92,
         "high_date": "2026-09-28",
-        "percentile": 83
+        "percentile": 82
       },
       "10Y": {
         "window_days": 365,
-        "from": "2025-11-24",
+        "from": "2025-11-25",
         "n": 251,
         "low": 3.97,
         "low_date": "2026-02-27",
         "high": 5.31,
         "high_date": "2026-10-05",
-        "percentile": 81
+        "percentile": 80
       }
     }
   },
   "canada": {
     "moves": {
       "2Y": {
-        "level": 3.24,
-        "date": "2026-11-25",
-        "1d": 0,
-        "1w": -6,
+        "level": 3.23,
+        "date": "2026-11-26",
+        "1d": -1,
+        "1w": -7,
         "1m": -13,
-        "3m": 31,
-        "1y": 84
+        "3m": 27,
+        "1y": 83
       },
       "5Y": {
-        "level": 3.41,
-        "date": "2026-11-25",
+        "level": 3.4,
+        "date": "2026-11-26",
         "1d": -1,
-        "1w": -11,
+        "1w": -13,
         "1m": -17,
-        "3m": 15,
+        "3m": 10,
         "1y": 68
       },
       "10Y": {
-        "level": 3.65,
-        "date": "2026-11-25",
-        "1d": -2,
-        "1w": -15,
+        "level": 3.64,
+        "date": "2026-11-26",
+        "1d": -1,
+        "1w": -17,
         "1m": -19,
-        "3m": -1,
-        "1y": 50
+        "3m": -6,
+        "1y": 51
       },
       "30Y": {
         "level": 3.99,
-        "date": "2026-11-25",
-        "1d": -3,
-        "1w": -14,
-        "1m": -14,
-        "3m": -10,
-        "1y": 38
+        "date": "2026-11-26",
+        "1d": 0,
+        "1w": -16,
+        "1m": -13,
+        "3m": -14,
+        "1y": 40
       }
     },
     "slopes": {
       "2s10s": {
         "level": 41,
-        "date": "2026-11-25",
-        "1d": -2,
-        "1w": -9,
+        "date": "2026-11-26",
+        "1d": 0,
+        "1w": -10,
         "1m": -6,
-        "3m": -32,
-        "1y": -34
+        "3m": -33,
+        "1y": -32
       },
       "5s30s": {
-        "level": 58,
-        "date": "2026-11-25",
-        "1d": -2,
+        "level": 59,
+        "date": "2026-11-26",
+        "1d": 1,
         "1w": -3,
-        "1m": 3,
-        "3m": -25,
-        "1y": -30
+        "1m": 4,
+        "3m": -24,
+        "1y": -28
       },
       "3m10y": {
-        "level": 96,
-        "date": "2026-11-25",
-        "1d": null,
+        "level": 94,
+        "date": "2026-11-26",
+        "1d": -2,
         "1w": null,
         "1m": null,
         "3m": null,
-        "1y": -2
+        "1y": -3
       }
     },
     "range_1y": {
       "2Y": {
         "window_days": 365,
-        "from": "2025-11-25",
+        "from": "2025-11-26",
         "n": 250,
         "low": 2.39,
         "low_date": "2026-02-27",
         "high": 3.41,
         "high_date": "2026-10-28",
-        "percentile": 85
+        "percentile": 84
       },
       "10Y": {
         "window_days": 365,
-        "from": "2025-11-25",
+        "from": "2025-11-26",
         "n": 250,
         "low": 3.12,
         "low_date": "2025-11-27",
         "high": 3.99,
         "high_date": "2026-09-29",
-        "percentile": 70
+        "percentile": 69
       }
     }
   },
   "cross_border": {
     "2Y": {
-      "level": 139,
-      "date": "2026-11-24",
-      "1d": -3,
-      "1w": -11,
-      "1m": 3,
-      "3m": 12,
-      "1y": 36
+      "level": 137,
+      "date": "2026-11-25",
+      "1d": -2,
+      "1w": -13,
+      "1m": 6,
+      "3m": 11,
+      "1y": 34
     },
     "10Y": {
-      "level": 124,
-      "date": "2026-11-24",
-      "1d": 0,
-      "1w": -5,
-      "1m": 7,
-      "3m": 22,
-      "1y": 38
+      "level": 120,
+      "date": "2026-11-25",
+      "1d": -4,
+      "1w": -7,
+      "1m": 4,
+      "3m": 20,
+      "1y": 34
     }
   },
   "policy": {
@@ -216,9 +216,9 @@
       4.0
     ],
     "fed_mid": 3.875,
-    "us_2y_minus_policy_bp": 75,
+    "us_2y_minus_policy_bp": 74,
     "boc_target": 2.5,
-    "canada_2y_minus_policy_bp": 74,
+    "canada_2y_minus_policy_bp": 73,
     "fed_upper_last_change": {
       "date": "2026-09-17",
       "from": 3.75,
@@ -232,78 +232,78 @@
   },
   "decomposition": {
     "1w": {
-      "from": "2026-11-17",
-      "to": "2026-11-24",
-      "nominal": -19,
-      "real": -10,
-      "breakeven": -9
+      "from": "2026-11-18",
+      "to": "2026-11-25",
+      "nominal": -22,
+      "real": -15,
+      "breakeven": -4
     },
     "1m": {
-      "from": "2026-10-23",
-      "to": "2026-11-24",
-      "nominal": -9,
-      "real": 13,
-      "breakeven": -22
+      "from": "2026-10-26",
+      "to": "2026-11-25",
+      "nominal": -15,
+      "real": 7,
+      "breakeven": -19
     },
     "3m": {
-      "from": "2026-08-25",
-      "to": "2026-11-24",
-      "nominal": 27,
-      "real": 47,
-      "breakeven": -20
+      "from": "2026-08-26",
+      "to": "2026-11-25",
+      "nominal": 19,
+      "real": 39,
+      "breakeven": -17
     }
   },
   "levels": {
-    "us_real_10y": 2.79,
-    "us_breakeven_10y": 2.12
+    "us_real_10y": 2.73,
+    "us_breakeven_10y": 2.15
   },
   "calendar": [
     {
       "bank": "Fed",
       "date": "2026-12-09",
-      "days_away": 13,
+      "days_away": 11,
       "date_label": "Wed 09 Dec 2026"
     },
     {
       "bank": "Bank of Canada",
       "date": "2026-12-09",
-      "days_away": 13,
+      "days_away": 11,
       "date_label": "Wed 09 Dec 2026"
     },
     {
       "bank": "Fed",
       "date": "2027-01-27",
-      "days_away": 62,
+      "days_away": 60,
       "date_label": "Wed 27 Jan 2027"
     },
     {
       "bank": "Bank of Canada",
       "date": "2027-01-27",
-      "days_away": 62,
+      "days_away": 60,
       "date_label": "Wed 27 Jan 2027"
     },
     {
       "bank": "Bank of Canada",
       "date": "2027-03-03",
-      "days_away": 97,
+      "days_away": 95,
       "date_label": "Wed 03 Mar 2027"
     },
     {
       "bank": "Fed",
       "date": "2027-03-17",
-      "days_away": 111,
+      "days_away": 109,
       "date_label": "Wed 17 Mar 2027"
     }
   ],
   "observations": [
-    "The US 10-year yield fell 19bp over the past week, to 4.91%.",
-    "The Canadian 10-year yield fell 15bp over the past week, to 3.65%.",
-    "The US curve is positively sloped: the 10-year yields 28bp more than the 2-year.",
-    "The US 2-year yield is 75bp above the Fed funds target midpoint. A 2-year yield above the policy rate is consistent with markets expecting rates to average higher over the next two years.",
-    "The Canadian 2-year yield is 74bp above the Bank of Canada's target rate. A 2-year yield above the policy rate is consistent with markets expecting rates to average higher over the next two years.",
-    "Over the past three months the US 10-year moved +27bp: real yield +47bp, inflation breakeven -20bp. Most of the move came from real yields.",
-    "US 10-year bonds yield 124bp more than Canadian 10-year bonds.",
-    "Next Fed decision: Wed 09 Dec 2026, in 13 days.",
-    "Next Bank of Canada decision: Wed 09 Dec 2026, in 13 days."
+    "The US 10-year yield fell 22bp over the past week, to 4.85%.",
+    "The Canadian 10-year yield fell 17bp over the past week, to 3.64%.",
+    "The US curve is positively sloped: the 10-year yields 24bp more than the 2-year, flatter by 8bp than a month ago.",
+    "The US 2-year yield is 74bp above the Fed funds target midpoint. A 2-year yield above the policy rate is consistent with markets expecting rates to average higher over the next two years.",
+    "The Canadian 2-year yield is 73bp above the Bank of Canada's target rate. A 2-year yield above the policy rate is consistent with markets expecting rates to average higher over the next two years.",
+    "Over the past month the US 10-year moved -15bp: real yield +7bp, inflation breakeven -19bp. Most of the move came from inflation expectations.",
+    "US 10-year bonds yield 120bp more than Canadian 10-year bonds.",
+    "Next Fed decision: Wed 09 Dec 2026, in 11 days.",
+    "Next Bank of Canada decision: Wed 09 Dec 2026, in 11 days."
   ]
 }
